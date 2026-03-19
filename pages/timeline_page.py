@@ -3,7 +3,7 @@ from __future__ import annotations
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QListWidget, QPushButton, QSplitter, QVBoxLayout, QWidget
 
-from models.project import HauntedProject, Timeline, TimelineTrack
+from models.project import ExperienceProject, Timeline, TimelineEvent, TimelineTrack
 from timeline.timeline_widget import TimelineView
 from widgets.property_editor import PropertyEditor
 
@@ -19,12 +19,14 @@ class TimelinePage(QWidget):
         title.setObjectName("titleLabel")
         layout.addWidget(title)
         tools = QHBoxLayout()
-        add_btn = QPushButton("Add Timeline")
-        add_track_btn = QPushButton("Add Track")
-        add_btn.clicked.connect(self.add_timeline)
-        add_track_btn.clicked.connect(self.add_track)
-        tools.addWidget(add_btn)
-        tools.addWidget(add_track_btn)
+        add_timeline = QPushButton("Add Timeline")
+        add_track = QPushButton("Add Track")
+        add_event = QPushButton("Add Event")
+        add_timeline.clicked.connect(self.add_timeline)
+        add_track.clicked.connect(self.add_track)
+        add_event.clicked.connect(self.add_event)
+        for button in [add_timeline, add_track, add_event]:
+            tools.addWidget(button)
         tools.addStretch(1)
         layout.addLayout(tools)
 
@@ -39,7 +41,7 @@ class TimelinePage(QWidget):
         splitter.setSizes([180, 760, 280])
         layout.addWidget(splitter)
 
-    def refresh(self, project: HauntedProject) -> None:
+    def refresh(self, project: ExperienceProject) -> None:
         self.list_widget.blockSignals(True)
         self.list_widget.clear()
         for timeline in project.timelines:
@@ -60,6 +62,14 @@ class TimelinePage(QWidget):
     def add_track(self) -> None:
         if self.selected is not None:
             self.selected.tracks.append(TimelineTrack(name=f"Track {len(self.selected.tracks) + 1}"))
+            self.on_changed()
+            self.timeline_view.load_timeline(self.selected)
+
+    def add_event(self) -> None:
+        if self.selected is not None:
+            if not self.selected.tracks:
+                self.selected.tracks.append(TimelineTrack(name="Track 1"))
+            self.selected.tracks[0].events.append(TimelineEvent(name=f"Event {len(self.selected.tracks[0].events) + 1}", start=1.0, duration=2.0))
             self.on_changed()
             self.timeline_view.load_timeline(self.selected)
 

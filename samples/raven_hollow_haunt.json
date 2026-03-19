@@ -12,7 +12,7 @@
     "safety_defaults": "Safe outputs on fault, worklights available, emergency hold supported",
     "notes": "Haunted attraction sample with scare events, actor support, and emergency operations.",
     "deployment_target": "IMMERSE Runtime",
-    "last_modified": "2026-03-19T07:35:42.101637+00:00",
+    "last_modified": "2026-03-19T07:35:42.097835+00:00",
     "enabled_modules": [
       "Haunt Module"
     ]

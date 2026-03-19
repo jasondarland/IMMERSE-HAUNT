@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from models.project import HauntedProject, MediaAsset
+from models.project import ExperienceProject, MediaAsset
 from widgets.entity_page import EntityPage
 
 
@@ -13,5 +13,5 @@ class MediaPage(EntityPage):
             on_project_changed=on_project_changed,
         )
 
-    def refresh(self, project: HauntedProject) -> None:
+    def refresh(self, project: ExperienceProject) -> None:
         super().refresh()

@@ -8,7 +8,7 @@ import json
 import uuid
 
 
-def _new_id(prefix: str) -> str:
+def new_id(prefix: str) -> str:
     return f"{prefix}_{uuid.uuid4().hex[:8]}"
 
 
@@ -17,37 +17,33 @@ def utc_now() -> str:
 
 
 @dataclass
-class ProjectInfo:
-    attraction_name: str = "Untitled Attraction"
-    show_id: str = "IMH-001"
-    version: str = "0.1.0"
-    operator_notes: str = ""
-    attraction_type: str = "Walkthrough Haunted House"
-    run_mode: str = "Continuous Flow"
-    throughput_mode: str = "Timed Group Entry"
-    group_size: int = 6
-    estimated_walkthrough_minutes: int = 12
-    reset_behavior: str = "Auto reset after zone clear"
-    emergency_defaults: str = "Disable scares, worklights on, hold actors"
+class ProjectMetadata:
+    project_name: str = "Untitled Experience"
+    show_id: str = "IMD-001"
+    version: str = "0.2.0"
+    client_site: str = ""
+    project_type: str = "General Attraction"
+    operating_mode: str = "Programmed Experience"
+    experience_duration_minutes: int = 15
+    reset_behavior: str = "Manual or automatic reset"
+    safety_defaults: str = "Safe outputs on fault, worklights available, emergency hold supported"
+    notes: str = ""
+    deployment_target: str = "IMMERSE Runtime"
     last_modified: str = field(default_factory=utc_now)
-    project_notes: str = ""
+    enabled_modules: list[str] = field(default_factory=list)
 
 
 @dataclass
-class Room:
-    id: str = field(default_factory=lambda: _new_id("room"))
-    name: str = "New Room"
-    type: str = "Room"
+class LayoutItem:
+    id: str = field(default_factory=lambda: new_id("layout"))
+    name: str = "New Layout Item"
+    item_type: str = "Room"
     description: str = ""
-    theme: str = ""
-    default_ambient_state: str = "Ambient"
-    entry_trigger: str = ""
-    exit_trigger: str = ""
-    panic_state: str = "Panic"
-    maintenance_state: str = "Worklight"
+    tags: list[str] = field(default_factory=list)
+    default_state: str = "Default"
     linked_devices: list[str] = field(default_factory=list)
     linked_cues: list[str] = field(default_factory=list)
-    actor_notes: str = ""
+    notes: str = ""
     x: float = 40.0
     y: float = 40.0
     width: float = 220.0
@@ -55,26 +51,15 @@ class Room:
 
 
 @dataclass
-class Zone:
-    id: str = field(default_factory=lambda: _new_id("zone"))
-    name: str = "New Zone"
-    room_id: str = ""
-    type: str = "Scare Zone"
-    description: str = ""
-    theme: str = ""
-    ambient_state: str = "Ambient"
-    notes: str = ""
-
-
-@dataclass
 class Device:
-    id: str = field(default_factory=lambda: _new_id("dev"))
+    id: str = field(default_factory=lambda: new_id("dev"))
     name: str = "New Device"
-    type: str = "Lighting Fixture"
+    device_type: str = "Lighting Fixture"
+    category: str = "Lighting"
     node_assignment: str = ""
     protocol: str = "DMX"
     address: str = "1"
-    room_zone_assignment: str = ""
+    location_assignment: str = ""
     tags: list[str] = field(default_factory=list)
     notes: str = ""
     enabled: bool = True
@@ -82,32 +67,30 @@ class Device:
 
 @dataclass
 class Node:
-    id: str = field(default_factory=lambda: _new_id("node"))
+    id: str = field(default_factory=lambda: new_id("node"))
     name: str = "New Node"
     hostname: str = "192.168.1.10"
-    room_zone_assignment: str = ""
-    type: str = "IMMERSE GPIO Node"
-    online: bool = False
-    outputs: int = 8
-    inputs: int = 8
-    health_status: str = "Placeholder"
+    node_type: str = "IMMERSE GPIO Node"
+    location_assignment: str = ""
     notes: str = ""
+    online: bool = False
+    io_summary: str = "8 in / 8 out"
+    health_status: str = "Placeholder"
 
 
 @dataclass
 class Cue:
-    id: str = field(default_factory=lambda: _new_id("cue"))
+    id: str = field(default_factory=lambda: new_id("cue"))
     name: str = "New Cue"
-    type: str = "Audio Cue"
+    cue_type: str = "Audio Cue"
     description: str = ""
-    target_devices: list[str] = field(default_factory=list)
+    targets: list[str] = field(default_factory=list)
     pre_delay: float = 0.0
     fade_time: float = 0.0
     hold_duration: float = 1.0
     follow_action: str = "None"
-    conditional_trigger: str = ""
     retrigger_rules: str = "Respect cooldown"
-    cooldown_time: float = 5.0
+    cooldown_time: float = 0.0
     priority: int = 50
     blocking: bool = False
     tags: list[str] = field(default_factory=list)
@@ -117,183 +100,215 @@ class Cue:
 
 @dataclass
 class TimelineEvent:
-    id: str = field(default_factory=lambda: _new_id("evt"))
+    id: str = field(default_factory=lambda: new_id("evt"))
     name: str = "Event"
     cue_id: str = ""
     start: float = 0.0
     duration: float = 1.0
     color: str = "#f8961e"
+    marker_label: str = ""
 
 
 @dataclass
 class TimelineTrack:
-    id: str = field(default_factory=lambda: _new_id("track"))
+    id: str = field(default_factory=lambda: new_id("track"))
     name: str = "Track"
-    type: str = "Utility"
+    track_type: str = "Utility"
     events: list[TimelineEvent] = field(default_factory=list)
 
 
 @dataclass
 class Timeline:
-    id: str = field(default_factory=lambda: _new_id("timeline"))
+    id: str = field(default_factory=lambda: new_id("timeline"))
     name: str = "Main Sequence"
     description: str = ""
     loop: bool = False
     duration: float = 30.0
+    snap: float = 0.5
+    markers: list[str] = field(default_factory=list)
     tracks: list[TimelineTrack] = field(default_factory=list)
 
 
 @dataclass
 class TriggerRule:
-    id: str = field(default_factory=lambda: _new_id("trig"))
+    id: str = field(default_factory=lambda: new_id("trig"))
     name: str = "New Trigger Rule"
-    trigger_source: str = "Beam Break"
-    condition: str = "On Trigger"
-    target_action: str = "Fire Cue"
+    source: str = "Sensor"
+    condition: str = "On Active"
+    action: str = "Fire Cue"
     target_ref: str = ""
     delay: float = 0.0
     repeat_mode: str = "One Shot"
     armed: bool = True
     debounce: float = 0.2
-    lockout_timer: float = 10.0
+    lockout_timer: float = 0.0
+    dependency_conditions: list[str] = field(default_factory=list)
     fallback_action: str = ""
 
 
 @dataclass
-class ScareEvent:
-    id: str = field(default_factory=lambda: _new_id("scare"))
-    name: str = "New Scare"
-    scare_type: str = "Audio Sting"
-    zone_room: str = ""
-    trigger_source: str = ""
-    cue_stack: list[str] = field(default_factory=list)
-    pre_scare_ambient_state: str = "Ambient"
-    strike_cue: str = ""
-    post_scare_decay: float = 4.0
-    cooldown_timer: float = 20.0
-    reset_rules: str = "Auto re-arm when clear"
-    actor_participation: bool = False
-    trigger_mode: str = "Auto"
-    intensity_rating: int = 5
-    safety_notes: str = ""
-    timing_notes: str = ""
-
-
-@dataclass
-class AmbientLayer:
-    id: str = field(default_factory=lambda: _new_id("amb"))
-    room_id: str = ""
-    name: str = "Ambient Layer"
-    asset_ref: str = ""
-    min_interval: float = 3.0
-    max_interval: float = 12.0
-    probability: float = 0.6
-    notes: str = ""
-
-
-@dataclass
 class RuntimeState:
-    id: str = field(default_factory=lambda: _new_id("state"))
-    name: str = "Open"
-    active_devices: list[str] = field(default_factory=list)
+    id: str = field(default_factory=lambda: new_id("state"))
+    name: str = "Active Show"
+    enabled_triggers: list[str] = field(default_factory=list)
     disabled_triggers: list[str] = field(default_factory=list)
     audio_mode: str = "Show"
-    lighting_mode: str = "Armed"
-    scare_enabled: bool = True
-    actor_cue_available: bool = True
-    transitions: list[str] = field(default_factory=list)
-    notes: str = ""
-
-
-@dataclass
-class ActorStation:
-    id: str = field(default_factory=lambda: _new_id("actor"))
-    name: str = "Actor Station"
-    zone_room: str = ""
-    cue_light_device: str = ""
-    local_trigger: str = ""
-    hold_indicator: str = ""
-    reset_indicator: str = ""
+    lighting_mode: str = "Programmed"
+    cue_availability: str = "All"
+    device_behavior: str = "Normal"
+    transition_rules: list[str] = field(default_factory=list)
     notes: str = ""
 
 
 @dataclass
 class MediaAsset:
-    id: str = field(default_factory=lambda: _new_id("media"))
+    id: str = field(default_factory=lambda: new_id("media"))
     name: str = "Asset"
     asset_type: str = "Audio"
     path: str = ""
     label: str = ""
+    metadata: str = ""
     notes: str = ""
 
 
 @dataclass
 class DeploymentManifest:
     target_runtime: str = "IMMERSE Runtime"
-    export_version: str = "1.0"
+    export_version: str = "2.0"
     package_name: str = "untitled_package"
     generated_at: str = field(default_factory=utc_now)
     validation_warnings: list[str] = field(default_factory=list)
+    supported_formats: list[str] = field(default_factory=lambda: ["folder", "zip", "future .immersepack"])
 
 
 @dataclass
-class HauntedProject:
-    info: ProjectInfo = field(default_factory=ProjectInfo)
-    rooms: list[Room] = field(default_factory=list)
-    zones: list[Zone] = field(default_factory=list)
+class ModuleConfig:
+    name: str
+    enabled: bool = True
+    description: str = ""
+
+
+@dataclass
+class ScareEvent:
+    id: str = field(default_factory=lambda: new_id("scare"))
+    name: str = "New Scare"
+    scare_type: str = "Audio Sting"
+    location_ref: str = ""
+    trigger_source: str = ""
+    cue_stack: list[str] = field(default_factory=list)
+    cooldown_timer: float = 20.0
+    actor_assignment: str = ""
+    intensity_rating: int = 5
+    safety_notes: str = ""
+
+
+@dataclass
+class PuzzleDefinition:
+    id: str = field(default_factory=lambda: new_id("puzzle"))
+    name: str = "New Puzzle"
+    state: str = "Idle"
+    success_condition: str = ""
+    fail_condition: str = ""
+    hint_behavior: str = "Manual hint"
+    reset_rule: str = "Manual reset"
+    dependencies: list[str] = field(default_factory=list)
+    notes: str = ""
+
+
+@dataclass
+class ActorStation:
+    id: str = field(default_factory=lambda: new_id("actor"))
+    name: str = "Actor / Operator Station"
+    location_ref: str = ""
+    cue_device: str = ""
+    trigger_binding: str = ""
+    notes: str = ""
+
+
+@dataclass
+class ExhibitInteraction:
+    id: str = field(default_factory=lambda: new_id("exhibit"))
+    name: str = "New Exhibit Interaction"
+    exhibit_area: str = ""
+    trigger_source: str = ""
+    media_action: str = ""
+    occupancy_behavior: str = "Idle attract"
+    notes: str = ""
+
+
+@dataclass
+class EventSequence:
+    id: str = field(default_factory=lambda: new_id("event"))
+    name: str = "New Event Sequence"
+    scene_order: list[str] = field(default_factory=list)
+    coordination_notes: str = ""
+    staff_cues: list[str] = field(default_factory=list)
+
+
+@dataclass
+class ExperienceProject:
+    schema_version: str = "2.0"
+    metadata: ProjectMetadata = field(default_factory=ProjectMetadata)
+    layout_items: list[LayoutItem] = field(default_factory=list)
     devices: list[Device] = field(default_factory=list)
     nodes: list[Node] = field(default_factory=list)
     cues: list[Cue] = field(default_factory=list)
     timelines: list[Timeline] = field(default_factory=list)
     trigger_rules: list[TriggerRule] = field(default_factory=list)
-    scares: list[ScareEvent] = field(default_factory=list)
-    ambient_layers: list[AmbientLayer] = field(default_factory=list)
     runtime_states: list[RuntimeState] = field(default_factory=list)
-    actor_stations: list[ActorStation] = field(default_factory=list)
     media_assets: list[MediaAsset] = field(default_factory=list)
     deployment: DeploymentManifest = field(default_factory=DeploymentManifest)
+    modules: list[ModuleConfig] = field(default_factory=list)
+    scare_events: list[ScareEvent] = field(default_factory=list)
+    puzzle_definitions: list[PuzzleDefinition] = field(default_factory=list)
+    actor_stations: list[ActorStation] = field(default_factory=list)
+    exhibit_interactions: list[ExhibitInteraction] = field(default_factory=list)
+    event_sequences: list[EventSequence] = field(default_factory=list)
 
     def touch(self) -> None:
-        self.info.last_modified = utc_now()
+        self.metadata.last_modified = utc_now()
 
     def to_dict(self) -> dict[str, Any]:
         self.touch()
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, payload: dict[str, Any]) -> "HauntedProject":
-        def build(dataclass_type, source):
-            return dataclass_type(**source)
+    def from_dict(cls, payload: dict[str, Any]) -> "ExperienceProject":
+        def build(dc, source: dict[str, Any]) -> Any:
+            return dc(**source)
 
-        info = build(ProjectInfo, payload.get("info", {}))
-        deployment = build(DeploymentManifest, payload.get("deployment", {}))
-        timelines = []
-        for tl in payload.get("timelines", []):
+        timelines: list[Timeline] = []
+        for timeline_payload in payload.get("timelines", []):
             tracks = []
-            for tr in tl.get("tracks", []):
-                events = [build(TimelineEvent, evt) for evt in tr.get("events", [])]
-                tracks.append(TimelineTrack(events=events, **{k: v for k, v in tr.items() if k != "events"}))
-            timelines.append(Timeline(tracks=tracks, **{k: v for k, v in tl.items() if k != "tracks"}))
+            for track_payload in timeline_payload.get("tracks", []):
+                events = [build(TimelineEvent, event_payload) for event_payload in track_payload.get("events", [])]
+                tracks.append(TimelineTrack(events=events, **{k: v for k, v in track_payload.items() if k != "events"}))
+            timelines.append(Timeline(tracks=tracks, **{k: v for k, v in timeline_payload.items() if k != "tracks"}))
+
+        metadata_payload = payload.get("metadata") or payload.get("info") or {}
         return cls(
-            info=info,
-            rooms=[build(Room, item) for item in payload.get("rooms", [])],
-            zones=[build(Zone, item) for item in payload.get("zones", [])],
+            schema_version=payload.get("schema_version", "2.0"),
+            metadata=build(ProjectMetadata, metadata_payload),
+            layout_items=[build(LayoutItem, item) for item in payload.get("layout_items", payload.get("rooms", []))],
             devices=[build(Device, item) for item in payload.get("devices", [])],
             nodes=[build(Node, item) for item in payload.get("nodes", [])],
             cues=[build(Cue, item) for item in payload.get("cues", [])],
             timelines=timelines,
             trigger_rules=[build(TriggerRule, item) for item in payload.get("trigger_rules", [])],
-            scares=[build(ScareEvent, item) for item in payload.get("scares", [])],
-            ambient_layers=[build(AmbientLayer, item) for item in payload.get("ambient_layers", [])],
             runtime_states=[build(RuntimeState, item) for item in payload.get("runtime_states", [])],
-            actor_stations=[build(ActorStation, item) for item in payload.get("actor_stations", [])],
             media_assets=[build(MediaAsset, item) for item in payload.get("media_assets", [])],
-            deployment=deployment,
+            deployment=build(DeploymentManifest, payload.get("deployment", {})),
+            modules=[build(ModuleConfig, item) for item in payload.get("modules", [])],
+            scare_events=[build(ScareEvent, item) for item in payload.get("scare_events", payload.get("scares", []))],
+            puzzle_definitions=[build(PuzzleDefinition, item) for item in payload.get("puzzle_definitions", [])],
+            actor_stations=[build(ActorStation, item) for item in payload.get("actor_stations", [])],
+            exhibit_interactions=[build(ExhibitInteraction, item) for item in payload.get("exhibit_interactions", [])],
+            event_sequences=[build(EventSequence, item) for item in payload.get("event_sequences", [])],
         )
 
     def save_json(self, path: str | Path) -> None:
         Path(path).write_text(json.dumps(self.to_dict(), indent=2), encoding="utf-8")
 
     @classmethod
-    def load_json(cls, path: str | Path) -> "HauntedProject":
+    def load_json(cls, path: str | Path) -> "ExperienceProject":
         return cls.from_dict(json.loads(Path(path).read_text(encoding="utf-8")))

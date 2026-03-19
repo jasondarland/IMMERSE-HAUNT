@@ -4,7 +4,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QGraphicsView, QHBoxLayout, QLabel, QListWidget, QPushButton, QSplitter, QVBoxLayout, QWidget
 
 from map_editor.map_scene import MapScene
-from models.project import HauntedProject, Room
+from models.project import ExperienceProject, LayoutItem
 from widgets.property_editor import PropertyEditor
 
 
@@ -13,62 +13,60 @@ class MapPage(QWidget):
         super().__init__()
         self.project_getter = project_getter
         self.on_changed = on_changed
-        self.selected_room: Room | None = None
-
+        self.selected_item: LayoutItem | None = None
         layout = QVBoxLayout(self)
-        title = QLabel("Map / Layout Designer")
+        title = QLabel("Layout / Map Designer")
         title.setObjectName("titleLabel")
         layout.addWidget(title)
-
         toolbar = QHBoxLayout()
-        add_room = QPushButton("Add Room Block")
-        add_room.clicked.connect(self.add_room)
-        toolbar.addWidget(add_room)
+        add_btn = QPushButton("Add Layout Block")
+        add_btn.clicked.connect(self.add_item)
+        toolbar.addWidget(add_btn)
         toolbar.addStretch(1)
         layout.addLayout(toolbar)
 
         splitter = QSplitter(Qt.Orientation.Horizontal)
-        self.room_list = QListWidget()
-        self.room_list.currentRowChanged.connect(self.select_room)
-        self.scene = MapScene(self._room_moved)
+        self.item_list = QListWidget()
+        self.item_list.currentRowChanged.connect(self.select_item)
+        self.scene = MapScene(self._item_moved)
         self.view = QGraphicsView(self.scene)
         self.inspector = PropertyEditor()
-        splitter.addWidget(self.room_list)
+        splitter.addWidget(self.item_list)
         splitter.addWidget(self.view)
         splitter.addWidget(self.inspector)
-        splitter.setSizes([180, 720, 300])
+        splitter.setSizes([180, 760, 300])
         layout.addWidget(splitter)
 
-    def refresh(self, project: HauntedProject) -> None:
-        self.room_list.blockSignals(True)
-        self.room_list.clear()
-        for room in project.rooms:
-            self.room_list.addItem(room.name)
-        self.room_list.blockSignals(False)
-        self.scene.load_rooms(project.rooms)
-        if project.rooms:
-            self.room_list.setCurrentRow(0)
+    def refresh(self, project: ExperienceProject) -> None:
+        self.item_list.blockSignals(True)
+        self.item_list.clear()
+        for item in project.layout_items:
+            self.item_list.addItem(f"{item.name} [{item.item_type}]")
+        self.item_list.blockSignals(False)
+        self.scene.load_items(project.layout_items)
+        if project.layout_items:
+            self.item_list.setCurrentRow(0)
         else:
             self.inspector.bind(None, self.on_changed)
 
-    def add_room(self) -> None:
+    def add_item(self) -> None:
         project = self.project_getter()
-        room = Room(name=f"Room {len(project.rooms) + 1}", x=40 + len(project.rooms) * 30, y=40 + len(project.rooms) * 25)
-        project.rooms.append(room)
+        item = LayoutItem(name=f"Item {len(project.layout_items) + 1}", x=40 + len(project.layout_items) * 28, y=40 + len(project.layout_items) * 22)
+        project.layout_items.append(item)
         self.on_changed()
         self.refresh(project)
 
-    def select_room(self, row: int) -> None:
+    def select_item(self, row: int) -> None:
         project = self.project_getter()
-        self.selected_room = project.rooms[row] if 0 <= row < len(project.rooms) else None
-        self.inspector.bind(self.selected_room, self._changed)
+        self.selected_item = project.layout_items[row] if 0 <= row < len(project.layout_items) else None
+        self.inspector.bind(self.selected_item, self._changed)
 
     def _changed(self) -> None:
         self.on_changed()
-        if self.selected_room is not None and self.room_list.currentItem() is not None:
-            self.room_list.currentItem().setText(self.selected_room.name)
-        self.scene.load_rooms(self.project_getter().rooms)
+        if self.selected_item is not None and self.item_list.currentItem() is not None:
+            self.item_list.currentItem().setText(f"{self.selected_item.name} [{self.selected_item.item_type}]")
+        self.scene.load_items(self.project_getter().layout_items)
 
-    def _room_moved(self) -> None:
+    def _item_moved(self) -> None:
         self.on_changed()
-        self.scene.load_rooms(self.project_getter().rooms)
+        self.scene.load_items(self.project_getter().layout_items)

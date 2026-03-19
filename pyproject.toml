@@ -1,7 +1,7 @@
 [project]
-name = "immerse-haunted-designer"
-version = "0.1.0"
-description = "IMMERSE Haunted Designer desktop MVP"
+name = "immerse-designer"
+version = "0.2.0"
+description = "IMMERSE Designer unified desktop MVP"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
