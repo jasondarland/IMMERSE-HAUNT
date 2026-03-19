@@ -34,14 +34,20 @@ class EntityPage(QWidget):
         self.create_factory = create_factory
         self.on_project_changed = on_project_changed
         self.selected: Any | None = None
+        self.title = title
 
         root = QVBoxLayout(self)
+        root.setContentsMargins(12, 12, 12, 12)
+        root.setSpacing(10)
         title_label = QLabel(title)
         title_label.setObjectName("titleLabel")
         root.addWidget(title_label)
+        subtitle = QLabel(f"Create, review, and edit {title.lower()} without leaving the current workspace.")
+        subtitle.setStyleSheet("color: #8fa7ba;")
+        root.addWidget(subtitle)
 
         toolbar = QHBoxLayout()
-        add_btn = QPushButton("Add")
+        add_btn = QPushButton("Create")
         remove_btn = QPushButton("Delete")
         toolbar.addWidget(add_btn)
         toolbar.addWidget(remove_btn)
@@ -51,8 +57,11 @@ class EntityPage(QWidget):
         splitter = QSplitter(Qt.Orientation.Horizontal)
         self.list_widget = QListWidget()
         self.list_widget.setMaximumWidth(220)
+        self.list_widget.setAlternatingRowColors(True)
         self.table = QTableWidget()
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.table.setAlternatingRowColors(True)
+        self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.inspector = PropertyEditor()
         splitter.addWidget(self.list_widget)
         splitter.addWidget(self.table)
@@ -66,6 +75,7 @@ class EntityPage(QWidget):
 
     def refresh(self) -> None:
         items = self.collection_getter()
+        selected_id = getattr(self.selected, "id", None)
         self.list_widget.blockSignals(True)
         self.list_widget.clear()
         for obj in items:
@@ -73,7 +83,8 @@ class EntityPage(QWidget):
         self.list_widget.blockSignals(False)
         self._populate_table(items)
         if items:
-            self.list_widget.setCurrentRow(0)
+            target_row = next((index for index, obj in enumerate(items) if getattr(obj, "id", None) == selected_id), 0)
+            self.list_widget.setCurrentRow(target_row)
         else:
             self.selected = None
             self.inspector.bind(None, self.on_project_changed)

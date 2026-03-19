@@ -36,6 +36,9 @@ QLabel#sectionLabel {
 QListWidget::item:selected, QTreeWidget::item:selected, QTableWidget::item:selected {
     background-color: #1a496a;
 }
+QListWidget::item {
+    padding: 8px 10px;
+}
 QHeaderView::section {
     background-color: #0f141a;
     color: #8db6d8;
@@ -43,6 +46,13 @@ QHeaderView::section {
     border: 1px solid #22313f;
 }
 QStatusBar { background-color: #0f141a; }
+QSplitter::handle {
+    background-color: #1a2330;
+}
+QToolBar {
+    spacing: 6px;
+    padding: 4px;
+}
 QScrollBar:vertical {
     background: #11161d;
     width: 12px;

@@ -32,6 +32,8 @@ It generalizes the earlier haunt-only tool into a single modular platform for pr
 - Save/load project files as JSON.
 - Structured folder or zip export packages.
 - Backward migration support for older IMMERSE Haunted Designer JSON files.
+- Refined workflow stability so page-local Create/Add actions stay in the active module instead of bouncing back to the Dashboard.
+- Upgraded layout canvas with background-image import, visibility/lock controls, opacity adjustment, zoom in/out, reset zoom, fit-to-view, drag placement, and inspector-synced selection.
 
 ## Sample Projects
 
@@ -62,6 +64,17 @@ pip install -e .
 ```bash
 python -m app.main
 ```
+
+## Layout Editor Controls
+
+- **Create Layout Item** adds a new room/zone block and keeps you on the Layout / Map page.
+- **Import Background** loads a PNG/JPG/JPEG floorplan or concept image behind the canvas.
+- **Background Visible** toggles the floorplan image on/off without removing it from the project.
+- **Lock Background** prevents accidental background interaction while editing layout blocks.
+- **Opacity** adjusts the floorplan image visibility.
+- **+ / - / 100% / Fit View** provide quick zoom tools for large attractions.
+- **Ctrl + Mouse Wheel** zooms the canvas.
+- Drag layout blocks directly on the canvas; selection stays synchronized with the item list and inspector.
 
 ## Project Structure
 

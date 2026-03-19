@@ -12,14 +12,14 @@
     "safety_defaults": "Safe outputs on fault, worklights available, emergency hold supported",
     "notes": "",
     "deployment_target": "IMMERSE Runtime",
-    "last_modified": "2026-03-19T07:35:42.100044+00:00",
+    "last_modified": "2026-03-19T07:54:08.541124+00:00",
     "enabled_modules": [
       "Events Module"
     ]
   },
   "layout_items": [
     {
-      "id": "layout_e031b11a",
+      "id": "layout_94a1dbe9",
       "name": "Arrival Lounge",
       "item_type": "Queue Area",
       "description": "",
@@ -34,7 +34,7 @@
       "height": 110
     },
     {
-      "id": "layout_8ebefc9c",
+      "id": "layout_3ceba136",
       "name": "Transition Corridor",
       "item_type": "Hallway",
       "description": "",
@@ -49,7 +49,7 @@
       "height": 90
     },
     {
-      "id": "layout_e82b32ec",
+      "id": "layout_5ed439ea",
       "name": "Main Ritual Chamber",
       "item_type": "Scene",
       "description": "",
@@ -64,29 +64,37 @@
       "height": 160
     }
   ],
+  "layout_canvas": {
+    "background_image": "",
+    "background_visible": true,
+    "background_opacity": 0.55,
+    "background_locked": true,
+    "fit_background_to_canvas": true,
+    "last_zoom_percent": 100
+  },
   "devices": [
     {
-      "id": "dev_8356702e",
+      "id": "dev_271e3422",
       "name": "Ritual Projection",
       "device_type": "Projector",
       "category": "Video",
-      "node_assignment": "node_d8d9c5a7",
+      "node_assignment": "node_b83f1657",
       "protocol": "Network",
       "address": "Proj-01",
-      "location_assignment": "layout_e82b32ec",
+      "location_assignment": "layout_5ed439ea",
       "tags": [],
       "notes": "",
       "enabled": true
     },
     {
-      "id": "dev_7a3be822",
+      "id": "dev_583c6eea",
       "name": "Staff Cue Panel",
       "device_type": "Status Indicator",
       "category": "Operator",
-      "node_assignment": "node_d8d9c5a7",
+      "node_assignment": "node_b83f1657",
       "protocol": "GPIO",
       "address": "O2",
-      "location_assignment": "layout_8ebefc9c",
+      "location_assignment": "layout_3ceba136",
       "tags": [],
       "notes": "",
       "enabled": true
@@ -94,11 +102,11 @@
   ],
   "nodes": [
     {
-      "id": "node_d8d9c5a7",
+      "id": "node_b83f1657",
       "name": "Scene Runtime Host",
       "hostname": "10.40.0.5",
       "node_type": "Central Runtime Host",
-      "location_assignment": "layout_e82b32ec",
+      "location_assignment": "layout_5ed439ea",
       "notes": "",
       "online": true,
       "io_summary": "8 in / 8 out",
@@ -107,12 +115,12 @@
   ],
   "cues": [
     {
-      "id": "cue_23f705c7",
+      "id": "cue_c7485b1a",
       "name": "Scene Transition",
       "cue_type": "Global Cue",
       "description": "",
       "targets": [
-        "dev_8356702e"
+        "dev_271e3422"
       ],
       "pre_delay": 0.0,
       "fade_time": 0.0,
@@ -127,12 +135,12 @@
       "color": "#4cc9f0"
     },
     {
-      "id": "cue_38d9569b",
+      "id": "cue_9331e0b0",
       "name": "Staff Ready",
       "cue_type": "Actor Cue",
       "description": "",
       "targets": [
-        "dev_7a3be822"
+        "dev_583c6eea"
       ],
       "pre_delay": 0.0,
       "fade_time": 0.0,
@@ -149,7 +157,7 @@
   ],
   "timelines": [
     {
-      "id": "timeline_637b944b",
+      "id": "timeline_e244978d",
       "name": "Opening Sequence",
       "description": "",
       "loop": false,
@@ -158,14 +166,14 @@
       "markers": [],
       "tracks": [
         {
-          "id": "track_aba0b7dd",
+          "id": "track_54a7cd29",
           "name": "Video",
           "track_type": "Video",
           "events": [
             {
-              "id": "evt_409fb13b",
+              "id": "evt_6534b8e1",
               "name": "Scene Transition",
-              "cue_id": "cue_23f705c7",
+              "cue_id": "cue_c7485b1a",
               "start": 0.0,
               "duration": 12.0,
               "color": "#4cc9f0",
@@ -178,12 +186,12 @@
   ],
   "trigger_rules": [
     {
-      "id": "trig_e6b12ea3",
+      "id": "trig_d4fe3a15",
       "name": "Advance Guests",
       "source": "Timer",
       "condition": "Every 180 seconds",
       "action": "Start Sequence",
-      "target_ref": "event_4b82aa7d",
+      "target_ref": "event_32fa210e",
       "delay": 0.0,
       "repeat_mode": "One Shot",
       "armed": true,
@@ -195,7 +203,7 @@
   ],
   "runtime_states": [
     {
-      "id": "state_8ef284e3",
+      "id": "state_84edfb1f",
       "name": "Pre-Show",
       "enabled_triggers": [],
       "disabled_triggers": [],
@@ -207,7 +215,7 @@
       "notes": ""
     },
     {
-      "id": "state_a9953652",
+      "id": "state_71ec0138",
       "name": "Active Show",
       "enabled_triggers": [],
       "disabled_triggers": [],
@@ -219,7 +227,7 @@
       "notes": ""
     },
     {
-      "id": "state_91b51ef6",
+      "id": "state_a6bcbadc",
       "name": "Hold",
       "enabled_triggers": [],
       "disabled_triggers": [],
@@ -231,7 +239,7 @@
       "notes": ""
     },
     {
-      "id": "state_273956a2",
+      "id": "state_289a6001",
       "name": "Shutdown",
       "enabled_triggers": [],
       "disabled_triggers": [],
@@ -248,7 +256,7 @@
     "target_runtime": "IMMERSE Runtime",
     "export_version": "2.0",
     "package_name": "the_veil:_immersive_experience",
-    "generated_at": "2026-03-19T07:35:42.097570+00:00",
+    "generated_at": "2026-03-19T07:54:08.535466+00:00",
     "validation_warnings": [],
     "supported_formats": [
       "folder",
@@ -269,16 +277,16 @@
   "exhibit_interactions": [],
   "event_sequences": [
     {
-      "id": "event_4b82aa7d",
+      "id": "event_32fa210e",
       "name": "Opening Processional",
       "scene_order": [
-        "layout_e031b11a",
-        "layout_8ebefc9c",
-        "layout_e82b32ec"
+        "layout_94a1dbe9",
+        "layout_3ceba136",
+        "layout_5ed439ea"
       ],
       "coordination_notes": "Scene manager advances guests every 3 minutes.",
       "staff_cues": [
-        "cue_38d9569b"
+        "cue_9331e0b0"
       ]
     }
   ]

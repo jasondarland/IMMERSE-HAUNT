@@ -12,14 +12,14 @@
     "safety_defaults": "Safe outputs on fault, worklights available, emergency hold supported",
     "notes": "",
     "deployment_target": "IMMERSE Runtime",
-    "last_modified": "2026-03-19T07:35:42.100876+00:00",
+    "last_modified": "2026-03-19T07:54:08.542679+00:00",
     "enabled_modules": [
       "Museum Module"
     ]
   },
   "layout_items": [
     {
-      "id": "layout_1177ceea",
+      "id": "layout_50f75234",
       "name": "Entry Kiosk",
       "item_type": "Exhibit Area",
       "description": "",
@@ -34,7 +34,7 @@
       "height": 120
     },
     {
-      "id": "layout_ab4b7eb2",
+      "id": "layout_3ab6dac8",
       "name": "Volcano Interactive",
       "item_type": "Exhibit Area",
       "description": "",
@@ -49,7 +49,7 @@
       "height": 120
     },
     {
-      "id": "layout_d1f176ee",
+      "id": "layout_b29cd472",
       "name": "Planet Wall",
       "item_type": "Exhibit Area",
       "description": "",
@@ -64,29 +64,37 @@
       "height": 120
     }
   ],
+  "layout_canvas": {
+    "background_image": "",
+    "background_visible": true,
+    "background_opacity": 0.55,
+    "background_locked": true,
+    "fit_background_to_canvas": true,
+    "last_zoom_percent": 100
+  },
   "devices": [
     {
-      "id": "dev_5342a2ea",
+      "id": "dev_fa2ee917",
       "name": "Welcome Screen",
       "device_type": "Kiosk Interface",
       "category": "Interactive",
-      "node_assignment": "node_ef4b7e18",
+      "node_assignment": "node_05ff8872",
       "protocol": "HTML5",
       "address": "kiosk-1",
-      "location_assignment": "layout_1177ceea",
+      "location_assignment": "layout_50f75234",
       "tags": [],
       "notes": "",
       "enabled": true
     },
     {
-      "id": "dev_a3508e95",
+      "id": "dev_6fbab42f",
       "name": "Volcano Motion Sensor",
       "device_type": "PIR Sensor",
       "category": "Sensors",
-      "node_assignment": "node_ef4b7e18",
+      "node_assignment": "node_05ff8872",
       "protocol": "GPIO",
       "address": "I4",
-      "location_assignment": "layout_ab4b7eb2",
+      "location_assignment": "layout_3ab6dac8",
       "tags": [],
       "notes": "",
       "enabled": true
@@ -94,11 +102,11 @@
   ],
   "nodes": [
     {
-      "id": "node_ef4b7e18",
+      "id": "node_05ff8872",
       "name": "Exhibit Media Node",
       "hostname": "10.50.0.15",
       "node_type": "IMMERSE Video Node",
-      "location_assignment": "layout_1177ceea",
+      "location_assignment": "layout_50f75234",
       "notes": "",
       "online": true,
       "io_summary": "8 in / 8 out",
@@ -107,12 +115,12 @@
   ],
   "cues": [
     {
-      "id": "cue_90cdda30",
+      "id": "cue_2b089e96",
       "name": "Attract Loop",
       "cue_type": "Exhibit Cue",
       "description": "",
       "targets": [
-        "dev_5342a2ea"
+        "dev_fa2ee917"
       ],
       "pre_delay": 0.0,
       "fade_time": 0.0,
@@ -127,12 +135,12 @@
       "color": "#4cc9f0"
     },
     {
-      "id": "cue_2cf6de1b",
+      "id": "cue_ad07bf91",
       "name": "Volcano Trigger",
       "cue_type": "Video Cue",
       "description": "",
       "targets": [
-        "dev_5342a2ea"
+        "dev_fa2ee917"
       ],
       "pre_delay": 0.0,
       "fade_time": 0.0,
@@ -150,12 +158,12 @@
   "timelines": [],
   "trigger_rules": [
     {
-      "id": "trig_26350b90",
+      "id": "trig_dad8710f",
       "name": "Idle Attract",
       "source": "Timer",
       "condition": "No occupancy for 45 seconds",
       "action": "Fire Cue",
-      "target_ref": "cue_90cdda30",
+      "target_ref": "cue_2b089e96",
       "delay": 0.0,
       "repeat_mode": "One Shot",
       "armed": true,
@@ -165,12 +173,12 @@
       "fallback_action": ""
     },
     {
-      "id": "trig_6e5ba0b3",
+      "id": "trig_e2ae837c",
       "name": "Occupancy Activation",
       "source": "PIR",
       "condition": "Motion detected",
       "action": "Fire Cue",
-      "target_ref": "cue_2cf6de1b",
+      "target_ref": "cue_ad07bf91",
       "delay": 0.0,
       "repeat_mode": "One Shot",
       "armed": true,
@@ -182,7 +190,7 @@
   ],
   "runtime_states": [
     {
-      "id": "state_1ab29a2f",
+      "id": "state_e7aa5ef9",
       "name": "Attract",
       "enabled_triggers": [],
       "disabled_triggers": [],
@@ -194,7 +202,7 @@
       "notes": ""
     },
     {
-      "id": "state_e6c5a99a",
+      "id": "state_629e029c",
       "name": "Open",
       "enabled_triggers": [],
       "disabled_triggers": [],
@@ -206,7 +214,7 @@
       "notes": ""
     },
     {
-      "id": "state_0da2d49c",
+      "id": "state_9a67f75d",
       "name": "Maintenance",
       "enabled_triggers": [],
       "disabled_triggers": [],
@@ -218,7 +226,7 @@
       "notes": ""
     },
     {
-      "id": "state_ebe5ae49",
+      "id": "state_01ce6962",
       "name": "Closed",
       "enabled_triggers": [],
       "disabled_triggers": [],
@@ -232,7 +240,7 @@
   ],
   "media_assets": [
     {
-      "id": "media_d173eb33",
+      "id": "media_6015e8d9",
       "name": "earth_overview.mp4",
       "asset_type": "Video",
       "path": "media/earth_overview.mp4",
@@ -245,7 +253,7 @@
     "target_runtime": "IMMERSE Runtime",
     "export_version": "2.0",
     "package_name": "discover_earth_exhibit",
-    "generated_at": "2026-03-19T07:35:42.097664+00:00",
+    "generated_at": "2026-03-19T07:54:08.535698+00:00",
     "validation_warnings": [],
     "supported_formats": [
       "folder",
@@ -265,11 +273,11 @@
   "actor_stations": [],
   "exhibit_interactions": [
     {
-      "id": "exhibit_8e5b9afe",
+      "id": "exhibit_416bb59c",
       "name": "Volcano Activation",
-      "exhibit_area": "layout_ab4b7eb2",
-      "trigger_source": "dev_a3508e95",
-      "media_action": "cue_2cf6de1b",
+      "exhibit_area": "layout_3ab6dac8",
+      "trigger_source": "dev_6fbab42f",
+      "media_action": "cue_ad07bf91",
       "occupancy_behavior": "Fire only when occupied",
       "notes": "Returns to attract loop after 20 seconds."
     }

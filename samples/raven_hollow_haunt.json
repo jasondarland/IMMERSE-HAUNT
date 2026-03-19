@@ -12,14 +12,14 @@
     "safety_defaults": "Safe outputs on fault, worklights available, emergency hold supported",
     "notes": "Haunted attraction sample with scare events, actor support, and emergency operations.",
     "deployment_target": "IMMERSE Runtime",
-    "last_modified": "2026-03-19T07:35:42.097835+00:00",
+    "last_modified": "2026-03-19T07:54:08.536133+00:00",
     "enabled_modules": [
       "Haunt Module"
     ]
   },
   "layout_items": [
     {
-      "id": "layout_34994a8a",
+      "id": "layout_2540b831",
       "name": "Queue Gate",
       "item_type": "Queue Area",
       "description": "",
@@ -34,7 +34,7 @@
       "height": 90
     },
     {
-      "id": "layout_0ed22753",
+      "id": "layout_5b3e2ecc",
       "name": "Whisper Hallway",
       "item_type": "Hallway",
       "description": "",
@@ -49,7 +49,7 @@
       "height": 90
     },
     {
-      "id": "layout_cec984b4",
+      "id": "layout_129045bc",
       "name": "Seance Chamber",
       "item_type": "Scene",
       "description": "",
@@ -64,7 +64,7 @@
       "height": 140
     },
     {
-      "id": "layout_026e4426",
+      "id": "layout_3dec7e39",
       "name": "Finale Crypt",
       "item_type": "Room",
       "description": "",
@@ -79,42 +79,50 @@
       "height": 140
     }
   ],
+  "layout_canvas": {
+    "background_image": "",
+    "background_visible": true,
+    "background_opacity": 0.55,
+    "background_locked": true,
+    "fit_background_to_canvas": true,
+    "last_zoom_percent": 100
+  },
   "devices": [
     {
-      "id": "dev_9fa6f476",
+      "id": "dev_7bfb0f3c",
       "name": "Whisper Speakers",
       "device_type": "Audio Output",
       "category": "Audio",
-      "node_assignment": "node_6ed57b3d",
+      "node_assignment": "node_57369d1e",
       "protocol": "Dante",
       "address": "A1",
-      "location_assignment": "layout_0ed22753",
+      "location_assignment": "layout_5b3e2ecc",
       "tags": [],
       "notes": "",
       "enabled": true
     },
     {
-      "id": "dev_6b05f457",
+      "id": "dev_38f50c03",
       "name": "Crypt Fog Burst",
       "device_type": "Fog Machine",
       "category": "FX",
-      "node_assignment": "node_6ed57b3d",
+      "node_assignment": "node_57369d1e",
       "protocol": "Relay",
       "address": "R3",
-      "location_assignment": "layout_026e4426",
+      "location_assignment": "layout_3dec7e39",
       "tags": [],
       "notes": "",
       "enabled": true
     },
     {
-      "id": "dev_9f9f0b77",
+      "id": "dev_5e65b667",
       "name": "Actor Cue Beacon",
       "device_type": "Cue Light",
       "category": "Operator",
-      "node_assignment": "node_6ed57b3d",
+      "node_assignment": "node_57369d1e",
       "protocol": "GPIO",
       "address": "O5",
-      "location_assignment": "layout_cec984b4",
+      "location_assignment": "layout_129045bc",
       "tags": [],
       "notes": "",
       "enabled": true
@@ -122,22 +130,22 @@
   ],
   "nodes": [
     {
-      "id": "node_6ed57b3d",
+      "id": "node_57369d1e",
       "name": "Hall FX Node",
       "hostname": "10.20.0.11",
       "node_type": "IMMERSE FX Node",
-      "location_assignment": "layout_0ed22753",
+      "location_assignment": "layout_5b3e2ecc",
       "notes": "",
       "online": true,
       "io_summary": "8 in / 8 out",
       "health_status": "Placeholder"
     },
     {
-      "id": "node_2716ca5b",
+      "id": "node_ff545cec",
       "name": "Finale Lighting Node",
       "hostname": "10.20.0.21",
       "node_type": "IMMERSE Lighting Node",
-      "location_assignment": "layout_026e4426",
+      "location_assignment": "layout_3dec7e39",
       "notes": "",
       "online": false,
       "io_summary": "8 in / 8 out",
@@ -146,12 +154,12 @@
   ],
   "cues": [
     {
-      "id": "cue_1cf2f762",
+      "id": "cue_552ba3af",
       "name": "Whisper Sting",
       "cue_type": "Audio Cue",
       "description": "",
       "targets": [
-        "dev_9fa6f476"
+        "dev_7bfb0f3c"
       ],
       "pre_delay": 0.0,
       "fade_time": 0.0,
@@ -166,12 +174,12 @@
       "color": "#4cc9f0"
     },
     {
-      "id": "cue_4b995321",
+      "id": "cue_baa49a25",
       "name": "Fog Burst",
       "cue_type": "Effect Cue",
       "description": "",
       "targets": [
-        "dev_6b05f457"
+        "dev_38f50c03"
       ],
       "pre_delay": 0.0,
       "fade_time": 0.0,
@@ -186,12 +194,12 @@
       "color": "#f3722c"
     },
     {
-      "id": "cue_e51ad815",
+      "id": "cue_cd6769a7",
       "name": "Actor GO",
       "cue_type": "Actor Cue",
       "description": "",
       "targets": [
-        "dev_9f9f0b77"
+        "dev_5e65b667"
       ],
       "pre_delay": 0.0,
       "fade_time": 0.0,
@@ -208,7 +216,7 @@
   ],
   "timelines": [
     {
-      "id": "timeline_3c599082",
+      "id": "timeline_1e4c5f87",
       "name": "Finale Sequence",
       "description": "Room-entry finale sting",
       "loop": false,
@@ -221,14 +229,14 @@
       ],
       "tracks": [
         {
-          "id": "track_37fd5026",
+          "id": "track_028f921e",
           "name": "Audio",
           "track_type": "Audio",
           "events": [
             {
-              "id": "evt_771d7694",
+              "id": "evt_f3961c75",
               "name": "Whisper Sting",
-              "cue_id": "cue_1cf2f762",
+              "cue_id": "cue_552ba3af",
               "start": 0.5,
               "duration": 4.0,
               "color": "#4cc9f0",
@@ -237,14 +245,14 @@
           ]
         },
         {
-          "id": "track_cdf05030",
+          "id": "track_08d52ec4",
           "name": "FX",
           "track_type": "FX",
           "events": [
             {
-              "id": "evt_5072842d",
+              "id": "evt_af7b7ca5",
               "name": "Fog Burst",
-              "cue_id": "cue_4b995321",
+              "cue_id": "cue_baa49a25",
               "start": 6.0,
               "duration": 1.5,
               "color": "#f3722c",
@@ -257,12 +265,12 @@
   ],
   "trigger_rules": [
     {
-      "id": "trig_68c5f64c",
+      "id": "trig_44ab8285",
       "name": "Hall Beam",
       "source": "Beam Break",
       "condition": "Guests enter hallway",
       "action": "Fire Cue",
-      "target_ref": "cue_1cf2f762",
+      "target_ref": "cue_552ba3af",
       "delay": 0.0,
       "repeat_mode": "One Shot",
       "armed": true,
@@ -272,12 +280,12 @@
       "fallback_action": ""
     },
     {
-      "id": "trig_496d0c2d",
+      "id": "trig_17dfb91f",
       "name": "Finale Entry",
       "source": "Room Entry",
       "condition": "Guests enter crypt",
       "action": "Start Timeline",
-      "target_ref": "timeline_3c599082",
+      "target_ref": "timeline_1e4c5f87",
       "delay": 0.0,
       "repeat_mode": "One Shot",
       "armed": true,
@@ -289,7 +297,7 @@
   ],
   "runtime_states": [
     {
-      "id": "state_1b5b05ce",
+      "id": "state_b168ddfa",
       "name": "Active Show",
       "enabled_triggers": [],
       "disabled_triggers": [],
@@ -301,7 +309,7 @@
       "notes": ""
     },
     {
-      "id": "state_f1be736a",
+      "id": "state_c5a75dda",
       "name": "Reset",
       "enabled_triggers": [],
       "disabled_triggers": [],
@@ -313,7 +321,7 @@
       "notes": ""
     },
     {
-      "id": "state_a53fa7b0",
+      "id": "state_0d451822",
       "name": "Worklight",
       "enabled_triggers": [],
       "disabled_triggers": [],
@@ -325,7 +333,7 @@
       "notes": ""
     },
     {
-      "id": "state_06dcfd0c",
+      "id": "state_db703d85",
       "name": "Emergency Stop",
       "enabled_triggers": [],
       "disabled_triggers": [],
@@ -339,7 +347,7 @@
   ],
   "media_assets": [
     {
-      "id": "media_8a8c3ca2",
+      "id": "media_d0300d2e",
       "name": "whisper_bed.wav",
       "asset_type": "Audio",
       "path": "media/whisper_bed.wav",
@@ -352,7 +360,7 @@
     "target_runtime": "IMMERSE Runtime",
     "export_version": "2.0",
     "package_name": "raven_hollow_haunt",
-    "generated_at": "2026-03-19T07:35:42.097278+00:00",
+    "generated_at": "2026-03-19T07:54:08.534983+00:00",
     "validation_warnings": [],
     "supported_formats": [
       "folder",
@@ -369,15 +377,15 @@
   ],
   "scare_events": [
     {
-      "id": "scare_f4d34cd8",
+      "id": "scare_dda37f29",
       "name": "Whisper Midpoint Hit",
       "scare_type": "Environmental Scare",
-      "location_ref": "layout_0ed22753",
+      "location_ref": "layout_5b3e2ecc",
       "trigger_source": "Beam Break",
       "cue_stack": [
-        "cue_1cf2f762",
-        "cue_4b995321",
-        "cue_e51ad815"
+        "cue_552ba3af",
+        "cue_baa49a25",
+        "cue_cd6769a7"
       ],
       "cooldown_timer": 20.0,
       "actor_assignment": "Seance Actor",
@@ -388,10 +396,10 @@
   "puzzle_definitions": [],
   "actor_stations": [
     {
-      "id": "actor_92aa05e6",
+      "id": "actor_063cd671",
       "name": "Seance Actor Station",
-      "location_ref": "layout_cec984b4",
-      "cue_device": "dev_9f9f0b77",
+      "location_ref": "layout_129045bc",
+      "cue_device": "dev_5e65b667",
       "trigger_binding": "Manual GO",
       "notes": ""
     }

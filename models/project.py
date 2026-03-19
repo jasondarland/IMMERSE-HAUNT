@@ -51,6 +51,16 @@ class LayoutItem:
 
 
 @dataclass
+class LayoutCanvasSettings:
+    background_image: str = ""
+    background_visible: bool = True
+    background_opacity: float = 0.55
+    background_locked: bool = True
+    fit_background_to_canvas: bool = True
+    last_zoom_percent: int = 100
+
+
+@dataclass
 class Device:
     id: str = field(default_factory=lambda: new_id("dev"))
     name: str = "New Device"
@@ -250,6 +260,7 @@ class ExperienceProject:
     schema_version: str = "2.0"
     metadata: ProjectMetadata = field(default_factory=ProjectMetadata)
     layout_items: list[LayoutItem] = field(default_factory=list)
+    layout_canvas: LayoutCanvasSettings = field(default_factory=LayoutCanvasSettings)
     devices: list[Device] = field(default_factory=list)
     nodes: list[Node] = field(default_factory=list)
     cues: list[Cue] = field(default_factory=list)
@@ -290,6 +301,7 @@ class ExperienceProject:
             schema_version=payload.get("schema_version", "2.0"),
             metadata=build(ProjectMetadata, metadata_payload),
             layout_items=[build(LayoutItem, item) for item in payload.get("layout_items", payload.get("rooms", []))],
+            layout_canvas=build(LayoutCanvasSettings, payload.get("layout_canvas", {})),
             devices=[build(Device, item) for item in payload.get("devices", [])],
             nodes=[build(Node, item) for item in payload.get("nodes", [])],
             cues=[build(Cue, item) for item in payload.get("cues", [])],

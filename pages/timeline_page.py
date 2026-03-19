@@ -15,9 +15,14 @@ class TimelinePage(QWidget):
         self.on_changed = on_changed
         self.selected: Timeline | None = None
         layout = QVBoxLayout(self)
+        layout.setContentsMargins(12, 12, 12, 12)
+        layout.setSpacing(10)
         title = QLabel("Timeline / Sequence Editor")
         title.setObjectName("titleLabel")
+        subtitle = QLabel("Build timed sequences, ambient loops, and synchronized show moments without losing your editing context.")
+        subtitle.setStyleSheet("color: #8fa7ba;")
         layout.addWidget(title)
+        layout.addWidget(subtitle)
         tools = QHBoxLayout()
         add_timeline = QPushButton("Add Timeline")
         add_track = QPushButton("Add Track")
@@ -42,13 +47,15 @@ class TimelinePage(QWidget):
         layout.addWidget(splitter)
 
     def refresh(self, project: ExperienceProject) -> None:
+        selected_id = self.selected.id if self.selected else None
         self.list_widget.blockSignals(True)
         self.list_widget.clear()
         for timeline in project.timelines:
             self.list_widget.addItem(timeline.name)
         self.list_widget.blockSignals(False)
         if project.timelines:
-            self.list_widget.setCurrentRow(0)
+            target_row = next((index for index, timeline in enumerate(project.timelines) if timeline.id == selected_id), 0)
+            self.list_widget.setCurrentRow(target_row)
         else:
             self.timeline_view.load_timeline(None)
             self.inspector.bind(None, self.on_changed)

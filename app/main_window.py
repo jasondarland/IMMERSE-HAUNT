@@ -144,7 +144,11 @@ class MainWindow(QMainWindow):
             button.clicked.connect(handler)
             toolbar.addWidget(button)
 
-    def refresh_navigation(self) -> None:
+    def current_page_name(self) -> str:
+        item = self.nav.currentItem()
+        return item.text() if item is not None else "Dashboard"
+
+    def refresh_navigation(self, keep_page: str | None = None) -> None:
         base_items = [
             "Dashboard",
             "Project Setup",
@@ -166,7 +170,8 @@ class MainWindow(QMainWindow):
         self.nav.clear()
         self.nav.addItems(nav_items)
         self.nav.blockSignals(False)
-        self.nav.setCurrentRow(0)
+        target_page = keep_page if keep_page in nav_items else "Dashboard"
+        self.nav.setCurrentRow(nav_items.index(target_page))
 
     def _navigate(self, row: int) -> None:
         item = self.nav.item(row)
@@ -197,11 +202,18 @@ class MainWindow(QMainWindow):
         self.museum_page.refresh(self.project)
 
     def on_project_changed(self) -> None:
+        page_name = self.current_page_name()
         self.project.touch()
         self.project.deployment.package_name = self.project.metadata.project_name.lower().replace(" ", "_")
-        self.refresh_navigation()
+        self.refresh_navigation(keep_page=page_name)
         self.refresh_all_pages()
+        self._restore_page(page_name)
         self.statusBar().showMessage(f"Project updated: {self.project.metadata.project_name}")
+
+    def _restore_page(self, page_name: str) -> None:
+        items = [self.nav.item(index).text() for index in range(self.nav.count())]
+        if page_name in items:
+            self.nav.setCurrentRow(items.index(page_name))
 
     def new_project(self) -> None:
         project_type, ok = QInputDialog.getItem(self, "New Project", "Project Type", list(PROJECT_TEMPLATES.keys()), 4, False)
@@ -212,7 +224,7 @@ class MainWindow(QMainWindow):
             return
         self.project = self.project_service.new_project(project_type, project_name or "Untitled Experience")
         self.current_file = None
-        self.refresh_navigation()
+        self.refresh_navigation(keep_page="Project Setup")
         self.refresh_all_pages()
         self.statusBar().showMessage(f"Created new {project_type} project")
 
@@ -222,7 +234,7 @@ class MainWindow(QMainWindow):
             return
         self.project = ExperienceProject.from_dict(self.sample_projects[sample_name].to_dict())
         self.current_file = None
-        self.refresh_navigation()
+        self.refresh_navigation(keep_page="Dashboard")
         self.refresh_all_pages()
         self.statusBar().showMessage(f"Loaded sample project: {sample_name}")
 
@@ -232,7 +244,7 @@ class MainWindow(QMainWindow):
             return
         self.project = self.project_service.load_project(file_name)
         self.current_file = Path(file_name)
-        self.refresh_navigation()
+        self.refresh_navigation(keep_page="Dashboard")
         self.refresh_all_pages()
         self.statusBar().showMessage(f"Opened {self.current_file.name}")
 
