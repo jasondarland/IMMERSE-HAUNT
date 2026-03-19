@@ -1,0 +1,606 @@
+{
+  "info": {
+    "attraction_name": "RAVEN HOLLOW HAUNT",
+    "show_id": "RVN-HLH-001",
+    "version": "1.0.0",
+    "operator_notes": "Nightly reset after each group. Actor briefing at 18:30.",
+    "attraction_type": "Walkthrough Haunted House",
+    "run_mode": "Continuous Flow",
+    "throughput_mode": "Timed Group Entry",
+    "group_size": 6,
+    "estimated_walkthrough_minutes": 14,
+    "reset_behavior": "Auto reset after zone clear",
+    "emergency_defaults": "Disable scares, worklights on, hold actors",
+    "last_modified": "2026-03-19T07:13:07.361859+00:00",
+    "project_notes": "Demonstrates ambient systems, hallway scare logic, finale sequence, and emergency handling."
+  },
+  "rooms": [
+    {
+      "id": "room_1542590c",
+      "name": "Raven Gate Queue",
+      "type": "Queue",
+      "description": "",
+      "theme": "Victorian cemetery",
+      "default_ambient_state": "Ambient",
+      "entry_trigger": "",
+      "exit_trigger": "",
+      "panic_state": "Panic",
+      "maintenance_state": "Worklight",
+      "linked_devices": [],
+      "linked_cues": [],
+      "actor_notes": "",
+      "x": 40,
+      "y": 50,
+      "width": 220,
+      "height": 100
+    },
+    {
+      "id": "room_a0e0787f",
+      "name": "Whisper Hallway",
+      "type": "Hallway",
+      "description": "",
+      "theme": "Cracked plaster and whisper vents",
+      "default_ambient_state": "Ambient",
+      "entry_trigger": "",
+      "exit_trigger": "",
+      "panic_state": "Panic",
+      "maintenance_state": "Worklight",
+      "linked_devices": [],
+      "linked_cues": [],
+      "actor_notes": "",
+      "x": 310,
+      "y": 45,
+      "width": 260,
+      "height": 90
+    },
+    {
+      "id": "room_b9194819",
+      "name": "Seance Chamber",
+      "type": "Scene Room",
+      "description": "",
+      "theme": "Occult parlor",
+      "default_ambient_state": "Ambient",
+      "entry_trigger": "",
+      "exit_trigger": "",
+      "panic_state": "Panic",
+      "maintenance_state": "Worklight",
+      "linked_devices": [],
+      "linked_cues": [],
+      "actor_notes": "",
+      "x": 620,
+      "y": 40,
+      "width": 220,
+      "height": 140
+    },
+    {
+      "id": "room_26b81f99",
+      "name": "Finale Crypt",
+      "type": "Finale Room",
+      "description": "",
+      "theme": "Collapsed crypt with projection tomb",
+      "default_ambient_state": "Ambient",
+      "entry_trigger": "",
+      "exit_trigger": "",
+      "panic_state": "Panic",
+      "maintenance_state": "Worklight",
+      "linked_devices": [],
+      "linked_cues": [],
+      "actor_notes": "",
+      "x": 620,
+      "y": 230,
+      "width": 260,
+      "height": 150
+    }
+  ],
+  "zones": [
+    {
+      "id": "zone_cef31665",
+      "name": "Whisper Midpoint",
+      "room_id": "room_a0e0787f",
+      "type": "Scare Zone",
+      "description": "Mid-hall fog and whisper sting",
+      "theme": "",
+      "ambient_state": "Ambient",
+      "notes": ""
+    },
+    {
+      "id": "zone_609c3115",
+      "name": "Seance Circle",
+      "room_id": "room_b9194819",
+      "type": "Actor Zone",
+      "description": "Actor-assisted blackout hit",
+      "theme": "",
+      "ambient_state": "Ambient",
+      "notes": ""
+    },
+    {
+      "id": "zone_0cb37e22",
+      "name": "Crypt Launch",
+      "room_id": "room_26b81f99",
+      "type": "Finale Zone",
+      "description": "Synchronized finale trigger",
+      "theme": "",
+      "ambient_state": "Ambient",
+      "notes": ""
+    }
+  ],
+  "devices": [
+    {
+      "id": "dev_3d1fbc24",
+      "name": "Hallway Whisper Speakers",
+      "type": "Audio Output",
+      "node_assignment": "node_c6792819",
+      "protocol": "Dante",
+      "address": "A1",
+      "room_zone_assignment": "room_a0e0787f",
+      "tags": [],
+      "notes": "",
+      "enabled": true
+    },
+    {
+      "id": "dev_88892e03",
+      "name": "Red Chase Fixtures",
+      "type": "Lighting Fixture",
+      "node_assignment": "node_31617b5a",
+      "protocol": "DMX",
+      "address": "Universe 2 / 001",
+      "room_zone_assignment": "room_a0e0787f",
+      "tags": [],
+      "notes": "",
+      "enabled": true
+    },
+    {
+      "id": "dev_8cb4c1aa",
+      "name": "Crypt Fog Burst",
+      "type": "Fog Machine",
+      "node_assignment": "node_388c557a",
+      "protocol": "Relay",
+      "address": "R3",
+      "room_zone_assignment": "room_26b81f99",
+      "tags": [],
+      "notes": "",
+      "enabled": true
+    },
+    {
+      "id": "dev_ae5ef979",
+      "name": "Actor GO Beacon",
+      "type": "Actor Cue Indicator",
+      "node_assignment": "node_388c557a",
+      "protocol": "GPIO",
+      "address": "O5",
+      "room_zone_assignment": "room_b9194819",
+      "tags": [],
+      "notes": "",
+      "enabled": true
+    },
+    {
+      "id": "dev_2d131313",
+      "name": "Emergency Worklights",
+      "type": "Worklights",
+      "node_assignment": "node_31617b5a",
+      "protocol": "Relay",
+      "address": "R7",
+      "room_zone_assignment": "room_26b81f99",
+      "tags": [],
+      "notes": "",
+      "enabled": true
+    }
+  ],
+  "nodes": [
+    {
+      "id": "node_c6792819",
+      "name": "Queue Audio Node",
+      "hostname": "10.10.0.20",
+      "room_zone_assignment": "Raven Gate Queue",
+      "type": "IMMERSE Audio Node",
+      "online": true,
+      "outputs": 8,
+      "inputs": 8,
+      "health_status": "Placeholder",
+      "notes": ""
+    },
+    {
+      "id": "node_388c557a",
+      "name": "Hallway FX Node",
+      "hostname": "10.10.0.31",
+      "room_zone_assignment": "Whisper Hallway",
+      "type": "IMMERSE FX Node",
+      "online": true,
+      "outputs": 8,
+      "inputs": 8,
+      "health_status": "Placeholder",
+      "notes": ""
+    },
+    {
+      "id": "node_31617b5a",
+      "name": "Finale Lighting Node",
+      "hostname": "10.10.0.40",
+      "room_zone_assignment": "Finale Crypt",
+      "type": "IMMERSE Lighting Node",
+      "online": false,
+      "outputs": 8,
+      "inputs": 8,
+      "health_status": "Placeholder",
+      "notes": ""
+    }
+  ],
+  "cues": [
+    {
+      "id": "cue_aa96e4a5",
+      "name": "Hall Whisper Sting",
+      "type": "Audio Cue",
+      "description": "",
+      "target_devices": [
+        "dev_3d1fbc24"
+      ],
+      "pre_delay": 0.0,
+      "fade_time": 0.0,
+      "hold_duration": 4.0,
+      "follow_action": "None",
+      "conditional_trigger": "",
+      "retrigger_rules": "Respect cooldown",
+      "cooldown_time": 5.0,
+      "priority": 50,
+      "blocking": false,
+      "tags": [],
+      "notes": "",
+      "color": "#4cc9f0"
+    },
+    {
+      "id": "cue_bba99217",
+      "name": "Hall Red Chase",
+      "type": "Lighting Cue",
+      "description": "",
+      "target_devices": [
+        "dev_88892e03"
+      ],
+      "pre_delay": 0.0,
+      "fade_time": 0.0,
+      "hold_duration": 8.0,
+      "follow_action": "None",
+      "conditional_trigger": "",
+      "retrigger_rules": "Respect cooldown",
+      "cooldown_time": 5.0,
+      "priority": 50,
+      "blocking": false,
+      "tags": [],
+      "notes": "",
+      "color": "#f8961e"
+    },
+    {
+      "id": "cue_223165fe",
+      "name": "Fog Burst",
+      "type": "Fog/Effect Cue",
+      "description": "",
+      "target_devices": [
+        "dev_8cb4c1aa"
+      ],
+      "pre_delay": 0.0,
+      "fade_time": 0.0,
+      "hold_duration": 1.5,
+      "follow_action": "None",
+      "conditional_trigger": "",
+      "retrigger_rules": "Respect cooldown",
+      "cooldown_time": 20.0,
+      "priority": 50,
+      "blocking": false,
+      "tags": [],
+      "notes": "",
+      "color": "#f3722c"
+    },
+    {
+      "id": "cue_a568148e",
+      "name": "Actor GO",
+      "type": "Actor Cue",
+      "description": "",
+      "target_devices": [
+        "dev_ae5ef979"
+      ],
+      "pre_delay": 0.0,
+      "fade_time": 0.0,
+      "hold_duration": 2.0,
+      "follow_action": "None",
+      "conditional_trigger": "",
+      "retrigger_rules": "Respect cooldown",
+      "cooldown_time": 5.0,
+      "priority": 50,
+      "blocking": false,
+      "tags": [],
+      "notes": "",
+      "color": "#90be6d"
+    },
+    {
+      "id": "cue_26f0b567",
+      "name": "Emergency Worklights",
+      "type": "Worklight Cue",
+      "description": "",
+      "target_devices": [
+        "dev_2d131313"
+      ],
+      "pre_delay": 0.0,
+      "fade_time": 0.0,
+      "hold_duration": 0.0,
+      "follow_action": "None",
+      "conditional_trigger": "",
+      "retrigger_rules": "Respect cooldown",
+      "cooldown_time": 5.0,
+      "priority": 50,
+      "blocking": true,
+      "tags": [],
+      "notes": "",
+      "color": "#f94144"
+    }
+  ],
+  "timelines": [
+    {
+      "id": "timeline_aafb2ac1",
+      "name": "Finale Sequence",
+      "description": "Entry-triggered synchronized crypt finale",
+      "loop": false,
+      "duration": 18.0,
+      "tracks": [
+        {
+          "id": "track_91145e60",
+          "name": "Audio",
+          "type": "Audio",
+          "events": [
+            {
+              "id": "evt_ca8db08c",
+              "name": "Whisper Sting",
+              "cue_id": "cue_aa96e4a5",
+              "start": 0.5,
+              "duration": 4.0,
+              "color": "#4cc9f0"
+            }
+          ]
+        },
+        {
+          "id": "track_d342a284",
+          "name": "Lighting",
+          "type": "Lighting",
+          "events": [
+            {
+              "id": "evt_b9abc5ce",
+              "name": "Red Chase",
+              "cue_id": "cue_bba99217",
+              "start": 0.0,
+              "duration": 8.0,
+              "color": "#f8961e"
+            }
+          ]
+        },
+        {
+          "id": "track_53dd069c",
+          "name": "FX",
+          "type": "Fog",
+          "events": [
+            {
+              "id": "evt_04c0c0ff",
+              "name": "Fog Hit",
+              "cue_id": "cue_223165fe",
+              "start": 6.0,
+              "duration": 1.5,
+              "color": "#f3722c"
+            }
+          ]
+        },
+        {
+          "id": "track_f20a1cb2",
+          "name": "Actor",
+          "type": "Actor Cue",
+          "events": [
+            {
+              "id": "evt_a75a1b7e",
+              "name": "GO Cue",
+              "cue_id": "cue_a568148e",
+              "start": 5.0,
+              "duration": 2.0,
+              "color": "#90be6d"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "trigger_rules": [
+    {
+      "id": "trig_fd498c4c",
+      "name": "Hallway Beam Break",
+      "trigger_source": "Beam Break",
+      "condition": "Group enters Whisper Hallway",
+      "target_action": "Start Cue",
+      "target_ref": "cue_aa96e4a5",
+      "delay": 0.0,
+      "repeat_mode": "One Shot",
+      "armed": true,
+      "debounce": 0.2,
+      "lockout_timer": 20.0,
+      "fallback_action": ""
+    },
+    {
+      "id": "trig_690ad9b2",
+      "name": "Finale Entry",
+      "trigger_source": "Room Entry",
+      "condition": "Group enters Finale Crypt",
+      "target_action": "Start Timeline",
+      "target_ref": "timeline_aafb2ac1",
+      "delay": 0.0,
+      "repeat_mode": "One Shot",
+      "armed": true,
+      "debounce": 0.2,
+      "lockout_timer": 45.0,
+      "fallback_action": ""
+    },
+    {
+      "id": "trig_e7c21db3",
+      "name": "Emergency Stop",
+      "trigger_source": "E-Stop",
+      "condition": "Any E-Stop Active",
+      "target_action": "Enter Runtime State",
+      "target_ref": "Emergency Stop",
+      "delay": 0.0,
+      "repeat_mode": "Repeat",
+      "armed": true,
+      "debounce": 0.2,
+      "lockout_timer": 10.0,
+      "fallback_action": ""
+    }
+  ],
+  "scares": [
+    {
+      "id": "scare_d81e429f",
+      "name": "Whisper Midpoint Hit",
+      "scare_type": "Environmental Scare",
+      "zone_room": "zone_cef31665",
+      "trigger_source": "Beam Break 2",
+      "cue_stack": [
+        "cue_aa96e4a5",
+        "cue_bba99217",
+        "cue_223165fe"
+      ],
+      "pre_scare_ambient_state": "Ambient",
+      "strike_cue": "cue_223165fe",
+      "post_scare_decay": 4.0,
+      "cooldown_timer": 20.0,
+      "reset_rules": "Auto re-arm when clear",
+      "actor_participation": false,
+      "trigger_mode": "Auto",
+      "intensity_rating": 5,
+      "safety_notes": "",
+      "timing_notes": ""
+    },
+    {
+      "id": "scare_3e75512d",
+      "name": "Seance Blackout Pop",
+      "scare_type": "Actor-Assisted Scare",
+      "zone_room": "zone_609c3115",
+      "trigger_source": "Actor Button",
+      "cue_stack": [
+        "cue_a568148e"
+      ],
+      "pre_scare_ambient_state": "Ambient",
+      "strike_cue": "",
+      "post_scare_decay": 4.0,
+      "cooldown_timer": 20.0,
+      "reset_rules": "Auto re-arm when clear",
+      "actor_participation": true,
+      "trigger_mode": "Assisted",
+      "intensity_rating": 5,
+      "safety_notes": "Actor clear zone before blackout",
+      "timing_notes": ""
+    }
+  ],
+  "ambient_layers": [
+    {
+      "id": "amb_6b76f1b3",
+      "room_id": "room_a0e0787f",
+      "name": "Whisper Loop",
+      "asset_ref": "whispers_loop.wav",
+      "min_interval": 5.0,
+      "max_interval": 15.0,
+      "probability": 0.8,
+      "notes": ""
+    },
+    {
+      "id": "amb_41aed6e3",
+      "room_id": "room_26b81f99",
+      "name": "Crypt Wind",
+      "asset_ref": "crypt_wind.wav",
+      "min_interval": 8.0,
+      "max_interval": 18.0,
+      "probability": 0.65,
+      "notes": ""
+    }
+  ],
+  "runtime_states": [
+    {
+      "id": "state_f8a91b1f",
+      "name": "Startup",
+      "active_devices": [],
+      "disabled_triggers": [],
+      "audio_mode": "Show",
+      "lighting_mode": "Worklight",
+      "scare_enabled": false,
+      "actor_cue_available": false,
+      "transitions": [],
+      "notes": ""
+    },
+    {
+      "id": "state_f883c5fb",
+      "name": "Active Show",
+      "active_devices": [],
+      "disabled_triggers": [],
+      "audio_mode": "Show",
+      "lighting_mode": "Armed",
+      "scare_enabled": true,
+      "actor_cue_available": true,
+      "transitions": [
+        "Hold",
+        "Reset",
+        "Emergency Stop"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "state_b586497d",
+      "name": "Hold",
+      "active_devices": [],
+      "disabled_triggers": [],
+      "audio_mode": "Show",
+      "lighting_mode": "Safe Blue",
+      "scare_enabled": false,
+      "actor_cue_available": true,
+      "transitions": [
+        "Active Show",
+        "Emergency Stop"
+      ],
+      "notes": ""
+    },
+    {
+      "id": "state_05160dbe",
+      "name": "Emergency Stop",
+      "active_devices": [],
+      "disabled_triggers": [],
+      "audio_mode": "Paging",
+      "lighting_mode": "Worklight",
+      "scare_enabled": false,
+      "actor_cue_available": false,
+      "transitions": [],
+      "notes": "Disable scares, enable worklights, hold actors"
+    }
+  ],
+  "actor_stations": [],
+  "media_assets": [
+    {
+      "id": "media_8c48dd98",
+      "name": "whispers_loop.wav",
+      "asset_type": "Audio",
+      "path": "media/whispers_loop.wav",
+      "label": "Whisper Hall Bed",
+      "notes": ""
+    },
+    {
+      "id": "media_ef545991",
+      "name": "crypt_wind.wav",
+      "asset_type": "Audio",
+      "path": "media/crypt_wind.wav",
+      "label": "Finale Wind Loop",
+      "notes": ""
+    },
+    {
+      "id": "media_5f33056a",
+      "name": "crypt_projection.mov",
+      "asset_type": "Video",
+      "path": "media/crypt_projection.mov",
+      "label": "Finale Projection",
+      "notes": ""
+    }
+  ],
+  "deployment": {
+    "target_runtime": "IMMERSE Runtime",
+    "export_version": "1.0",
+    "package_name": "raven_hollow_haunt",
+    "generated_at": "2026-03-19T07:13:07.361825+00:00",
+    "validation_warnings": []
+  }
+}
