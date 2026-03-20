@@ -1,0 +1,286 @@
+{
+  "schema_version": "2.0",
+  "metadata": {
+    "project_name": "DISCOVER EARTH EXHIBIT",
+    "show_id": "IMD-001",
+    "version": "0.2.0",
+    "client_site": "",
+    "project_type": "Museum / Exhibit",
+    "operating_mode": "Open/close daily cycle",
+    "experience_duration_minutes": 15,
+    "reset_behavior": "Manual or automatic reset",
+    "safety_defaults": "Safe outputs on fault, worklights available, emergency hold supported",
+    "notes": "",
+    "deployment_target": "IMMERSE Runtime",
+    "last_modified": "2026-03-19T07:54:08.542679+00:00",
+    "enabled_modules": [
+      "Museum Module"
+    ]
+  },
+  "layout_items": [
+    {
+      "id": "layout_50f75234",
+      "name": "Entry Kiosk",
+      "item_type": "Exhibit Area",
+      "description": "",
+      "tags": [],
+      "default_state": "Default",
+      "linked_devices": [],
+      "linked_cues": [],
+      "notes": "",
+      "x": 40,
+      "y": 60,
+      "width": 220,
+      "height": 120
+    },
+    {
+      "id": "layout_3ab6dac8",
+      "name": "Volcano Interactive",
+      "item_type": "Exhibit Area",
+      "description": "",
+      "tags": [],
+      "default_state": "Default",
+      "linked_devices": [],
+      "linked_cues": [],
+      "notes": "",
+      "x": 300,
+      "y": 60,
+      "width": 240,
+      "height": 120
+    },
+    {
+      "id": "layout_b29cd472",
+      "name": "Planet Wall",
+      "item_type": "Exhibit Area",
+      "description": "",
+      "tags": [],
+      "default_state": "Default",
+      "linked_devices": [],
+      "linked_cues": [],
+      "notes": "",
+      "x": 580,
+      "y": 60,
+      "width": 260,
+      "height": 120
+    }
+  ],
+  "layout_canvas": {
+    "background_image": "",
+    "background_visible": true,
+    "background_opacity": 0.55,
+    "background_locked": true,
+    "fit_background_to_canvas": true,
+    "last_zoom_percent": 100
+  },
+  "devices": [
+    {
+      "id": "dev_fa2ee917",
+      "name": "Welcome Screen",
+      "device_type": "Kiosk Interface",
+      "category": "Interactive",
+      "node_assignment": "node_05ff8872",
+      "protocol": "HTML5",
+      "address": "kiosk-1",
+      "location_assignment": "layout_50f75234",
+      "tags": [],
+      "notes": "",
+      "enabled": true
+    },
+    {
+      "id": "dev_6fbab42f",
+      "name": "Volcano Motion Sensor",
+      "device_type": "PIR Sensor",
+      "category": "Sensors",
+      "node_assignment": "node_05ff8872",
+      "protocol": "GPIO",
+      "address": "I4",
+      "location_assignment": "layout_3ab6dac8",
+      "tags": [],
+      "notes": "",
+      "enabled": true
+    }
+  ],
+  "nodes": [
+    {
+      "id": "node_05ff8872",
+      "name": "Exhibit Media Node",
+      "hostname": "10.50.0.15",
+      "node_type": "IMMERSE Video Node",
+      "location_assignment": "layout_50f75234",
+      "notes": "",
+      "online": true,
+      "io_summary": "8 in / 8 out",
+      "health_status": "Placeholder"
+    }
+  ],
+  "cues": [
+    {
+      "id": "cue_2b089e96",
+      "name": "Attract Loop",
+      "cue_type": "Exhibit Cue",
+      "description": "",
+      "targets": [
+        "dev_fa2ee917"
+      ],
+      "pre_delay": 0.0,
+      "fade_time": 0.0,
+      "hold_duration": 30.0,
+      "follow_action": "None",
+      "retrigger_rules": "Respect cooldown",
+      "cooldown_time": 0.0,
+      "priority": 50,
+      "blocking": false,
+      "tags": [],
+      "notes": "",
+      "color": "#4cc9f0"
+    },
+    {
+      "id": "cue_ad07bf91",
+      "name": "Volcano Trigger",
+      "cue_type": "Video Cue",
+      "description": "",
+      "targets": [
+        "dev_fa2ee917"
+      ],
+      "pre_delay": 0.0,
+      "fade_time": 0.0,
+      "hold_duration": 20.0,
+      "follow_action": "None",
+      "retrigger_rules": "Respect cooldown",
+      "cooldown_time": 0.0,
+      "priority": 50,
+      "blocking": false,
+      "tags": [],
+      "notes": "",
+      "color": "#f8961e"
+    }
+  ],
+  "timelines": [],
+  "trigger_rules": [
+    {
+      "id": "trig_dad8710f",
+      "name": "Idle Attract",
+      "source": "Timer",
+      "condition": "No occupancy for 45 seconds",
+      "action": "Fire Cue",
+      "target_ref": "cue_2b089e96",
+      "delay": 0.0,
+      "repeat_mode": "One Shot",
+      "armed": true,
+      "debounce": 0.2,
+      "lockout_timer": 0.0,
+      "dependency_conditions": [],
+      "fallback_action": ""
+    },
+    {
+      "id": "trig_e2ae837c",
+      "name": "Occupancy Activation",
+      "source": "PIR",
+      "condition": "Motion detected",
+      "action": "Fire Cue",
+      "target_ref": "cue_ad07bf91",
+      "delay": 0.0,
+      "repeat_mode": "One Shot",
+      "armed": true,
+      "debounce": 0.2,
+      "lockout_timer": 0.0,
+      "dependency_conditions": [],
+      "fallback_action": ""
+    }
+  ],
+  "runtime_states": [
+    {
+      "id": "state_e7aa5ef9",
+      "name": "Attract",
+      "enabled_triggers": [],
+      "disabled_triggers": [],
+      "audio_mode": "Show",
+      "lighting_mode": "Programmed",
+      "cue_availability": "All",
+      "device_behavior": "Normal",
+      "transition_rules": [],
+      "notes": ""
+    },
+    {
+      "id": "state_629e029c",
+      "name": "Open",
+      "enabled_triggers": [],
+      "disabled_triggers": [],
+      "audio_mode": "Show",
+      "lighting_mode": "Programmed",
+      "cue_availability": "All",
+      "device_behavior": "Normal",
+      "transition_rules": [],
+      "notes": ""
+    },
+    {
+      "id": "state_9a67f75d",
+      "name": "Maintenance",
+      "enabled_triggers": [],
+      "disabled_triggers": [],
+      "audio_mode": "Show",
+      "lighting_mode": "Programmed",
+      "cue_availability": "All",
+      "device_behavior": "Normal",
+      "transition_rules": [],
+      "notes": ""
+    },
+    {
+      "id": "state_01ce6962",
+      "name": "Closed",
+      "enabled_triggers": [],
+      "disabled_triggers": [],
+      "audio_mode": "Show",
+      "lighting_mode": "Programmed",
+      "cue_availability": "All",
+      "device_behavior": "Normal",
+      "transition_rules": [],
+      "notes": ""
+    }
+  ],
+  "media_assets": [
+    {
+      "id": "media_6015e8d9",
+      "name": "earth_overview.mp4",
+      "asset_type": "Video",
+      "path": "media/earth_overview.mp4",
+      "label": "Earth overview loop",
+      "metadata": "",
+      "notes": ""
+    }
+  ],
+  "deployment": {
+    "target_runtime": "IMMERSE Runtime",
+    "export_version": "2.0",
+    "package_name": "discover_earth_exhibit",
+    "generated_at": "2026-03-19T07:54:08.535698+00:00",
+    "validation_warnings": [],
+    "supported_formats": [
+      "folder",
+      "zip",
+      "future .immersepack"
+    ]
+  },
+  "modules": [
+    {
+      "name": "Museum Module",
+      "enabled": true,
+      "description": "Optional tools for museum / exhibit workflows"
+    }
+  ],
+  "scare_events": [],
+  "puzzle_definitions": [],
+  "actor_stations": [],
+  "exhibit_interactions": [
+    {
+      "id": "exhibit_416bb59c",
+      "name": "Volcano Activation",
+      "exhibit_area": "layout_3ab6dac8",
+      "trigger_source": "dev_6fbab42f",
+      "media_action": "cue_ad07bf91",
+      "occupancy_behavior": "Fire only when occupied",
+      "notes": "Returns to attract loop after 20 seconds."
+    }
+  ],
+  "event_sequences": []
+}

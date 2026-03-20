@@ -1,0 +1,319 @@
+{
+  "schema_version": "2.0",
+  "metadata": {
+    "project_name": "LOCKDOWN CELLBLOCK 13",
+    "show_id": "IMD-001",
+    "version": "0.2.0",
+    "client_site": "Cellblock Adventures",
+    "project_type": "Escape Room",
+    "operating_mode": "Session-based gameplay",
+    "experience_duration_minutes": 15,
+    "reset_behavior": "Manual or automatic reset",
+    "safety_defaults": "Safe outputs on fault, worklights available, emergency hold supported",
+    "notes": "",
+    "deployment_target": "IMMERSE Runtime",
+    "last_modified": "2026-03-19T07:54:08.539332+00:00",
+    "enabled_modules": [
+      "Escape Module"
+    ]
+  },
+  "layout_items": [
+    {
+      "id": "layout_ab89b8fe",
+      "name": "Booking Area",
+      "item_type": "Scene",
+      "description": "",
+      "tags": [],
+      "default_state": "Default",
+      "linked_devices": [],
+      "linked_cues": [],
+      "notes": "",
+      "x": 40,
+      "y": 60,
+      "width": 220,
+      "height": 110
+    },
+    {
+      "id": "layout_fd1140c7",
+      "name": "Cell Block",
+      "item_type": "Room",
+      "description": "",
+      "tags": [],
+      "default_state": "Default",
+      "linked_devices": [],
+      "linked_cues": [],
+      "notes": "",
+      "x": 300,
+      "y": 60,
+      "width": 260,
+      "height": 130
+    },
+    {
+      "id": "layout_fec62c81",
+      "name": "Control Booth",
+      "item_type": "Operator Station",
+      "description": "",
+      "tags": [],
+      "default_state": "Default",
+      "linked_devices": [],
+      "linked_cues": [],
+      "notes": "",
+      "x": 600,
+      "y": 60,
+      "width": 220,
+      "height": 100
+    }
+  ],
+  "layout_canvas": {
+    "background_image": "",
+    "background_visible": true,
+    "background_opacity": 0.55,
+    "background_locked": true,
+    "fit_background_to_canvas": true,
+    "last_zoom_percent": 100
+  },
+  "devices": [
+    {
+      "id": "dev_51d0b2b5",
+      "name": "Door Maglock",
+      "device_type": "Maglock",
+      "category": "Access",
+      "node_assignment": "node_de98f778",
+      "protocol": "Relay",
+      "address": "R1",
+      "location_assignment": "layout_fd1140c7",
+      "tags": [],
+      "notes": "",
+      "enabled": true
+    },
+    {
+      "id": "dev_b9590b6e",
+      "name": "Hint Monitor",
+      "device_type": "Video Display",
+      "category": "Video",
+      "node_assignment": "node_de98f778",
+      "protocol": "HDMI",
+      "address": "Display 1",
+      "location_assignment": "layout_ab89b8fe",
+      "tags": [],
+      "notes": "",
+      "enabled": true
+    }
+  ],
+  "nodes": [
+    {
+      "id": "node_de98f778",
+      "name": "Game Master OCC",
+      "hostname": "10.30.0.10",
+      "node_type": "IMMERSE OCC Panel",
+      "location_assignment": "layout_fec62c81",
+      "notes": "",
+      "online": true,
+      "io_summary": "8 in / 8 out",
+      "health_status": "Placeholder"
+    }
+  ],
+  "cues": [
+    {
+      "id": "cue_b71a892f",
+      "name": "Puzzle Solved",
+      "cue_type": "Puzzle Cue",
+      "description": "",
+      "targets": [
+        "dev_51d0b2b5"
+      ],
+      "pre_delay": 0.0,
+      "fade_time": 0.0,
+      "hold_duration": 0.0,
+      "follow_action": "None",
+      "retrigger_rules": "Respect cooldown",
+      "cooldown_time": 0.0,
+      "priority": 50,
+      "blocking": false,
+      "tags": [],
+      "notes": "",
+      "color": "#90be6d"
+    },
+    {
+      "id": "cue_098f30be",
+      "name": "Hint Playback",
+      "cue_type": "Video Cue",
+      "description": "",
+      "targets": [
+        "dev_b9590b6e"
+      ],
+      "pre_delay": 0.0,
+      "fade_time": 0.0,
+      "hold_duration": 10.0,
+      "follow_action": "None",
+      "retrigger_rules": "Respect cooldown",
+      "cooldown_time": 0.0,
+      "priority": 50,
+      "blocking": false,
+      "tags": [],
+      "notes": "",
+      "color": "#4cc9f0"
+    }
+  ],
+  "timelines": [
+    {
+      "id": "timeline_ce42f8e3",
+      "name": "Finale Escape",
+      "description": "",
+      "loop": false,
+      "duration": 20.0,
+      "snap": 0.5,
+      "markers": [],
+      "tracks": [
+        {
+          "id": "track_2927c920",
+          "name": "Reveal",
+          "track_type": "Video",
+          "events": []
+        }
+      ]
+    }
+  ],
+  "trigger_rules": [
+    {
+      "id": "trig_72f4f7d1",
+      "name": "Code Success",
+      "source": "Keypad",
+      "condition": "Valid code",
+      "action": "Fire Cue",
+      "target_ref": "cue_b71a892f",
+      "delay": 0.0,
+      "repeat_mode": "One Shot",
+      "armed": true,
+      "debounce": 0.2,
+      "lockout_timer": 0.0,
+      "dependency_conditions": [],
+      "fallback_action": ""
+    },
+    {
+      "id": "trig_0269e5fa",
+      "name": "Hint Request",
+      "source": "GM Button",
+      "condition": "Hint pressed",
+      "action": "Fire Cue",
+      "target_ref": "cue_098f30be",
+      "delay": 0.0,
+      "repeat_mode": "One Shot",
+      "armed": true,
+      "debounce": 0.2,
+      "lockout_timer": 0.0,
+      "dependency_conditions": [],
+      "fallback_action": ""
+    }
+  ],
+  "runtime_states": [
+    {
+      "id": "state_ddc542b7",
+      "name": "Startup",
+      "enabled_triggers": [],
+      "disabled_triggers": [],
+      "audio_mode": "Show",
+      "lighting_mode": "Programmed",
+      "cue_availability": "All",
+      "device_behavior": "Normal",
+      "transition_rules": [],
+      "notes": ""
+    },
+    {
+      "id": "state_c819d573",
+      "name": "Gameplay",
+      "enabled_triggers": [],
+      "disabled_triggers": [],
+      "audio_mode": "Show",
+      "lighting_mode": "Programmed",
+      "cue_availability": "All",
+      "device_behavior": "Normal",
+      "transition_rules": [],
+      "notes": ""
+    },
+    {
+      "id": "state_a4484543",
+      "name": "Hint Mode",
+      "enabled_triggers": [],
+      "disabled_triggers": [],
+      "audio_mode": "Show",
+      "lighting_mode": "Programmed",
+      "cue_availability": "All",
+      "device_behavior": "Normal",
+      "transition_rules": [],
+      "notes": ""
+    },
+    {
+      "id": "state_dc39fc51",
+      "name": "Reset",
+      "enabled_triggers": [],
+      "disabled_triggers": [],
+      "audio_mode": "Show",
+      "lighting_mode": "Programmed",
+      "cue_availability": "All",
+      "device_behavior": "Normal",
+      "transition_rules": [],
+      "notes": ""
+    }
+  ],
+  "media_assets": [
+    {
+      "id": "media_973033b1",
+      "name": "intro_brief.mp4",
+      "asset_type": "Video",
+      "path": "media/intro_brief.mp4",
+      "label": "Intro briefing",
+      "metadata": "",
+      "notes": ""
+    }
+  ],
+  "deployment": {
+    "target_runtime": "IMMERSE Runtime",
+    "export_version": "2.0",
+    "package_name": "lockdown_cellblock_13",
+    "generated_at": "2026-03-19T07:54:08.535297+00:00",
+    "validation_warnings": [],
+    "supported_formats": [
+      "folder",
+      "zip",
+      "future .immersepack"
+    ]
+  },
+  "modules": [
+    {
+      "name": "Escape Module",
+      "enabled": true,
+      "description": "Optional tools for escape room workflows"
+    }
+  ],
+  "scare_events": [],
+  "puzzle_definitions": [
+    {
+      "id": "puzzle_ab629788",
+      "name": "Keypad Override",
+      "state": "Armed",
+      "success_condition": "Correct code entered",
+      "fail_condition": "",
+      "hint_behavior": "Auto hint after 5 minutes",
+      "reset_rule": "Reset keypad and relock door",
+      "dependencies": [],
+      "notes": ""
+    },
+    {
+      "id": "puzzle_bf5663e7",
+      "name": "Evidence Board",
+      "state": "Idle",
+      "success_condition": "All evidence tiles placed",
+      "fail_condition": "",
+      "hint_behavior": "Manual hint",
+      "reset_rule": "Manual reset",
+      "dependencies": [
+        "Keypad Override"
+      ],
+      "notes": ""
+    }
+  ],
+  "actor_stations": [],
+  "exhibit_interactions": [],
+  "event_sequences": []
+}

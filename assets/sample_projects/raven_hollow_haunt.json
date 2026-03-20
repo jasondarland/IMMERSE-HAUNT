@@ -1,0 +1,409 @@
+{
+  "schema_version": "2.0",
+  "metadata": {
+    "project_name": "RAVEN HOLLOW HAUNT",
+    "show_id": "IMD-001",
+    "version": "0.2.0",
+    "client_site": "Raven Hollow Park",
+    "project_type": "Haunted House",
+    "operating_mode": "Continuous walk-through",
+    "experience_duration_minutes": 15,
+    "reset_behavior": "Manual or automatic reset",
+    "safety_defaults": "Safe outputs on fault, worklights available, emergency hold supported",
+    "notes": "Haunted attraction sample with scare events, actor support, and emergency operations.",
+    "deployment_target": "IMMERSE Runtime",
+    "last_modified": "2026-03-19T07:54:08.544145+00:00",
+    "enabled_modules": [
+      "Haunt Module"
+    ]
+  },
+  "layout_items": [
+    {
+      "id": "layout_2540b831",
+      "name": "Queue Gate",
+      "item_type": "Queue Area",
+      "description": "",
+      "tags": [],
+      "default_state": "Default",
+      "linked_devices": [],
+      "linked_cues": [],
+      "notes": "",
+      "x": 40,
+      "y": 50,
+      "width": 210,
+      "height": 90
+    },
+    {
+      "id": "layout_5b3e2ecc",
+      "name": "Whisper Hallway",
+      "item_type": "Hallway",
+      "description": "",
+      "tags": [],
+      "default_state": "Default",
+      "linked_devices": [],
+      "linked_cues": [],
+      "notes": "",
+      "x": 280,
+      "y": 50,
+      "width": 280,
+      "height": 90
+    },
+    {
+      "id": "layout_129045bc",
+      "name": "Seance Chamber",
+      "item_type": "Scene",
+      "description": "",
+      "tags": [],
+      "default_state": "Default",
+      "linked_devices": [],
+      "linked_cues": [],
+      "notes": "",
+      "x": 600,
+      "y": 40,
+      "width": 230,
+      "height": 140
+    },
+    {
+      "id": "layout_3dec7e39",
+      "name": "Finale Crypt",
+      "item_type": "Room",
+      "description": "",
+      "tags": [],
+      "default_state": "Default",
+      "linked_devices": [],
+      "linked_cues": [],
+      "notes": "",
+      "x": 600,
+      "y": 230,
+      "width": 250,
+      "height": 140
+    }
+  ],
+  "layout_canvas": {
+    "background_image": "",
+    "background_visible": true,
+    "background_opacity": 0.55,
+    "background_locked": true,
+    "fit_background_to_canvas": true,
+    "last_zoom_percent": 100
+  },
+  "devices": [
+    {
+      "id": "dev_7bfb0f3c",
+      "name": "Whisper Speakers",
+      "device_type": "Audio Output",
+      "category": "Audio",
+      "node_assignment": "node_57369d1e",
+      "protocol": "Dante",
+      "address": "A1",
+      "location_assignment": "layout_5b3e2ecc",
+      "tags": [],
+      "notes": "",
+      "enabled": true
+    },
+    {
+      "id": "dev_38f50c03",
+      "name": "Crypt Fog Burst",
+      "device_type": "Fog Machine",
+      "category": "FX",
+      "node_assignment": "node_57369d1e",
+      "protocol": "Relay",
+      "address": "R3",
+      "location_assignment": "layout_3dec7e39",
+      "tags": [],
+      "notes": "",
+      "enabled": true
+    },
+    {
+      "id": "dev_5e65b667",
+      "name": "Actor Cue Beacon",
+      "device_type": "Cue Light",
+      "category": "Operator",
+      "node_assignment": "node_57369d1e",
+      "protocol": "GPIO",
+      "address": "O5",
+      "location_assignment": "layout_129045bc",
+      "tags": [],
+      "notes": "",
+      "enabled": true
+    }
+  ],
+  "nodes": [
+    {
+      "id": "node_57369d1e",
+      "name": "Hall FX Node",
+      "hostname": "10.20.0.11",
+      "node_type": "IMMERSE FX Node",
+      "location_assignment": "layout_5b3e2ecc",
+      "notes": "",
+      "online": true,
+      "io_summary": "8 in / 8 out",
+      "health_status": "Placeholder"
+    },
+    {
+      "id": "node_ff545cec",
+      "name": "Finale Lighting Node",
+      "hostname": "10.20.0.21",
+      "node_type": "IMMERSE Lighting Node",
+      "location_assignment": "layout_3dec7e39",
+      "notes": "",
+      "online": false,
+      "io_summary": "8 in / 8 out",
+      "health_status": "Placeholder"
+    }
+  ],
+  "cues": [
+    {
+      "id": "cue_552ba3af",
+      "name": "Whisper Sting",
+      "cue_type": "Audio Cue",
+      "description": "",
+      "targets": [
+        "dev_7bfb0f3c"
+      ],
+      "pre_delay": 0.0,
+      "fade_time": 0.0,
+      "hold_duration": 4.0,
+      "follow_action": "None",
+      "retrigger_rules": "Respect cooldown",
+      "cooldown_time": 0.0,
+      "priority": 50,
+      "blocking": false,
+      "tags": [],
+      "notes": "",
+      "color": "#4cc9f0"
+    },
+    {
+      "id": "cue_baa49a25",
+      "name": "Fog Burst",
+      "cue_type": "Effect Cue",
+      "description": "",
+      "targets": [
+        "dev_38f50c03"
+      ],
+      "pre_delay": 0.0,
+      "fade_time": 0.0,
+      "hold_duration": 1.5,
+      "follow_action": "None",
+      "retrigger_rules": "Respect cooldown",
+      "cooldown_time": 20,
+      "priority": 50,
+      "blocking": false,
+      "tags": [],
+      "notes": "",
+      "color": "#f3722c"
+    },
+    {
+      "id": "cue_cd6769a7",
+      "name": "Actor GO",
+      "cue_type": "Actor Cue",
+      "description": "",
+      "targets": [
+        "dev_5e65b667"
+      ],
+      "pre_delay": 0.0,
+      "fade_time": 0.0,
+      "hold_duration": 2.0,
+      "follow_action": "None",
+      "retrigger_rules": "Respect cooldown",
+      "cooldown_time": 0.0,
+      "priority": 50,
+      "blocking": false,
+      "tags": [],
+      "notes": "",
+      "color": "#90be6d"
+    }
+  ],
+  "timelines": [
+    {
+      "id": "timeline_1e4c5f87",
+      "name": "Finale Sequence",
+      "description": "Room-entry finale sting",
+      "loop": false,
+      "duration": 18.0,
+      "snap": 0.5,
+      "markers": [
+        "Entry",
+        "Hit",
+        "Reset"
+      ],
+      "tracks": [
+        {
+          "id": "track_028f921e",
+          "name": "Audio",
+          "track_type": "Audio",
+          "events": [
+            {
+              "id": "evt_f3961c75",
+              "name": "Whisper Sting",
+              "cue_id": "cue_552ba3af",
+              "start": 0.5,
+              "duration": 4.0,
+              "color": "#4cc9f0",
+              "marker_label": ""
+            }
+          ]
+        },
+        {
+          "id": "track_08d52ec4",
+          "name": "FX",
+          "track_type": "FX",
+          "events": [
+            {
+              "id": "evt_af7b7ca5",
+              "name": "Fog Burst",
+              "cue_id": "cue_baa49a25",
+              "start": 6.0,
+              "duration": 1.5,
+              "color": "#f3722c",
+              "marker_label": ""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "trigger_rules": [
+    {
+      "id": "trig_44ab8285",
+      "name": "Hall Beam",
+      "source": "Beam Break",
+      "condition": "Guests enter hallway",
+      "action": "Fire Cue",
+      "target_ref": "cue_552ba3af",
+      "delay": 0.0,
+      "repeat_mode": "One Shot",
+      "armed": true,
+      "debounce": 0.2,
+      "lockout_timer": 20.0,
+      "dependency_conditions": [],
+      "fallback_action": ""
+    },
+    {
+      "id": "trig_17dfb91f",
+      "name": "Finale Entry",
+      "source": "Room Entry",
+      "condition": "Guests enter crypt",
+      "action": "Start Timeline",
+      "target_ref": "timeline_1e4c5f87",
+      "delay": 0.0,
+      "repeat_mode": "One Shot",
+      "armed": true,
+      "debounce": 0.2,
+      "lockout_timer": 45.0,
+      "dependency_conditions": [],
+      "fallback_action": ""
+    }
+  ],
+  "runtime_states": [
+    {
+      "id": "state_b168ddfa",
+      "name": "Active Show",
+      "enabled_triggers": [],
+      "disabled_triggers": [],
+      "audio_mode": "Show",
+      "lighting_mode": "Programmed",
+      "cue_availability": "All",
+      "device_behavior": "Normal",
+      "transition_rules": [],
+      "notes": ""
+    },
+    {
+      "id": "state_c5a75dda",
+      "name": "Reset",
+      "enabled_triggers": [],
+      "disabled_triggers": [],
+      "audio_mode": "Show",
+      "lighting_mode": "Programmed",
+      "cue_availability": "All",
+      "device_behavior": "Normal",
+      "transition_rules": [],
+      "notes": ""
+    },
+    {
+      "id": "state_0d451822",
+      "name": "Worklight",
+      "enabled_triggers": [],
+      "disabled_triggers": [],
+      "audio_mode": "Show",
+      "lighting_mode": "Programmed",
+      "cue_availability": "All",
+      "device_behavior": "Normal",
+      "transition_rules": [],
+      "notes": ""
+    },
+    {
+      "id": "state_db703d85",
+      "name": "Emergency Stop",
+      "enabled_triggers": [],
+      "disabled_triggers": [],
+      "audio_mode": "Show",
+      "lighting_mode": "Programmed",
+      "cue_availability": "All",
+      "device_behavior": "Normal",
+      "transition_rules": [],
+      "notes": ""
+    }
+  ],
+  "media_assets": [
+    {
+      "id": "media_d0300d2e",
+      "name": "whisper_bed.wav",
+      "asset_type": "Audio",
+      "path": "media/whisper_bed.wav",
+      "label": "Ambient whisper bed",
+      "metadata": "",
+      "notes": ""
+    }
+  ],
+  "deployment": {
+    "target_runtime": "IMMERSE Runtime",
+    "export_version": "2.0",
+    "package_name": "raven_hollow_haunt",
+    "generated_at": "2026-03-19T07:54:08.534983+00:00",
+    "validation_warnings": [],
+    "supported_formats": [
+      "folder",
+      "zip",
+      "future .immersepack"
+    ]
+  },
+  "modules": [
+    {
+      "name": "Haunt Module",
+      "enabled": true,
+      "description": "Optional tools for haunted house workflows"
+    }
+  ],
+  "scare_events": [
+    {
+      "id": "scare_dda37f29",
+      "name": "Whisper Midpoint Hit",
+      "scare_type": "Environmental Scare",
+      "location_ref": "layout_5b3e2ecc",
+      "trigger_source": "Beam Break",
+      "cue_stack": [
+        "cue_552ba3af",
+        "cue_baa49a25",
+        "cue_cd6769a7"
+      ],
+      "cooldown_timer": 20.0,
+      "actor_assignment": "Seance Actor",
+      "intensity_rating": 5,
+      "safety_notes": "Observe cooldown before re-arm."
+    }
+  ],
+  "puzzle_definitions": [],
+  "actor_stations": [
+    {
+      "id": "actor_063cd671",
+      "name": "Seance Actor Station",
+      "location_ref": "layout_129045bc",
+      "cue_device": "dev_5e65b667",
+      "trigger_binding": "Manual GO",
+      "notes": ""
+    }
+  ],
+  "exhibit_interactions": [],
+  "event_sequences": []
+}
