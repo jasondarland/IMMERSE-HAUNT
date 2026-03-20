@@ -122,6 +122,7 @@ class MapPage(QWidget):
         project.layout_items.append(item)
         self.selected_item = item
         self.on_changed()
+        self.refresh(project)
 
     def select_item_by_row(self, row: int) -> None:
         project = self.project_getter()
@@ -165,12 +166,14 @@ class MapPage(QWidget):
         project.layout_canvas.background_visible = True
         project.layout_canvas.fit_background_to_canvas = True
         self.on_changed()
+        self._reload_scene_only(project)
         self.view.fit_scene()
 
     def clear_background(self) -> None:
         project = self.project_getter()
         project.layout_canvas.background_image = ""
         self.on_changed()
+        self._reload_scene_only(project)
 
     def _background_controls_changed(self) -> None:
         project = self.project_getter()
@@ -178,7 +181,12 @@ class MapPage(QWidget):
         project.layout_canvas.background_locked = self.bg_lock.isChecked()
         project.layout_canvas.background_opacity = self.opacity_slider.value() / 100.0
         self.on_changed()
+        self._reload_scene_only(project)
 
     def _update_zoom_label(self, zoom_percent: int) -> None:
         self.zoom_label.setText(f"Zoom: {zoom_percent}%")
         self.project_getter().layout_canvas.last_zoom_percent = zoom_percent
+
+    def _reload_scene_only(self, project: ExperienceProject) -> None:
+        self.scene.load_project(project.layout_items, project.layout_canvas)
+        self.scene.select_item(self.selected_item.id if self.selected_item else None)

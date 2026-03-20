@@ -149,23 +149,7 @@ class MainWindow(QMainWindow):
         return item.text() if item is not None else "Dashboard"
 
     def refresh_navigation(self, keep_page: str | None = None) -> None:
-        base_items = [
-            "Dashboard",
-            "Project Setup",
-            "Layout / Map",
-            "Zones / Scenes",
-            "Devices / Patch",
-            "Nodes / Hardware",
-            "Cue Builder",
-            "Timeline / Sequence",
-            "Trigger Logic",
-            "States / Modes",
-            "Media Library",
-            "Safety / Operations",
-            "Actor / Operator Stations",
-            "Deployment / Export",
-        ]
-        nav_items = base_items + self.project.metadata.enabled_modules
+        nav_items = self._expected_nav_signature()
         self.nav.blockSignals(True)
         self.nav.clear()
         self.nav.addItems(nav_items)
@@ -205,10 +189,34 @@ class MainWindow(QMainWindow):
         page_name = self.current_page_name()
         self.project.touch()
         self.project.deployment.package_name = self.project.metadata.project_name.lower().replace(" ", "_")
-        self.refresh_navigation(keep_page=page_name)
-        self.refresh_all_pages()
-        self._restore_page(page_name)
+        if self._current_nav_signature() != self._expected_nav_signature():
+            self.refresh_navigation(keep_page=page_name)
+            self._restore_page(page_name)
+        self.dashboard_page.refresh(self.project)
+        self.deployment_page.refresh(self.project)
         self.statusBar().showMessage(f"Project updated: {self.project.metadata.project_name}")
+
+    def _expected_nav_signature(self) -> list[str]:
+        base_items = [
+            "Dashboard",
+            "Project Setup",
+            "Layout / Map",
+            "Zones / Scenes",
+            "Devices / Patch",
+            "Nodes / Hardware",
+            "Cue Builder",
+            "Timeline / Sequence",
+            "Trigger Logic",
+            "States / Modes",
+            "Media Library",
+            "Safety / Operations",
+            "Actor / Operator Stations",
+            "Deployment / Export",
+        ]
+        return base_items + self.project.metadata.enabled_modules
+
+    def _current_nav_signature(self) -> list[str]:
+        return [self.nav.item(index).text() for index in range(self.nav.count())]
 
     def _restore_page(self, page_name: str) -> None:
         items = [self.nav.item(index).text() for index in range(self.nav.count())]

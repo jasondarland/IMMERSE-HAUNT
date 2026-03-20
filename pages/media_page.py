@@ -36,3 +36,4 @@ class MediaPage(EntityPage):
         self.collection_getter().append(asset)
         self.selected = asset
         self.on_project_changed()
+        self.refresh(self.project_getter())
